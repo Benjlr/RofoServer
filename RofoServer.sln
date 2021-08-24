@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RofoServer", "RofoServer\RofoServer.csproj", "{0A4D92C2-9548-4093-8AAA-E8CF5FB90659}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RofoServer.Core", "RofoServer.Core\RofoServer.Core.csproj", "{9C0F2F45-E9C9-4CB1-9659-8FE32B0FF901}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RofoServer.Domain", "RofoServer.Domain\RofoServer.Domain.csproj", "{26C1172D-CBD0-4F5E-B40C-EB422C2F1FA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RofoServer.Persistence", "RofoServer.Infrastructure\RofoServer.Persistence.csproj", "{A8ED784F-AED6-4D30-BD35-0124AFD0D085}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3694AAE6-55FF-4887-8929-44F3CF331029}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RofoServer.Core.Tests", "RofoServer.Core.Tests\RofoServer.Core.Tests.csproj", "{D674466F-6E49-440A-93E8-CE363EA521A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A4D92C2-9548-4093-8AAA-E8CF5FB90659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A4D92C2-9548-4093-8AAA-E8CF5FB90659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A4D92C2-9548-4093-8AAA-E8CF5FB90659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4D92C2-9548-4093-8AAA-E8CF5FB90659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0F2F45-E9C9-4CB1-9659-8FE32B0FF901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0F2F45-E9C9-4CB1-9659-8FE32B0FF901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0F2F45-E9C9-4CB1-9659-8FE32B0FF901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0F2F45-E9C9-4CB1-9659-8FE32B0FF901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26C1172D-CBD0-4F5E-B40C-EB422C2F1FA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C1172D-CBD0-4F5E-B40C-EB422C2F1FA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26C1172D-CBD0-4F5E-B40C-EB422C2F1FA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26C1172D-CBD0-4F5E-B40C-EB422C2F1FA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8ED784F-AED6-4D30-BD35-0124AFD0D085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8ED784F-AED6-4D30-BD35-0124AFD0D085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8ED784F-AED6-4D30-BD35-0124AFD0D085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8ED784F-AED6-4D30-BD35-0124AFD0D085}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D674466F-6E49-440A-93E8-CE363EA521A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D674466F-6E49-440A-93E8-CE363EA521A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D674466F-6E49-440A-93E8-CE363EA521A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D674466F-6E49-440A-93E8-CE363EA521A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D674466F-6E49-440A-93E8-CE363EA521A1} = {3694AAE6-55FF-4887-8929-44F3CF331029}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30D2630F-42E9-4091-9125-20BAAE33D4BC}
+	EndGlobalSection
+EndGlobal
