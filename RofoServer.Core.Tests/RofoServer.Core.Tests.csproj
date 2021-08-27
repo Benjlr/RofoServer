@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RofoServer.Core\RofoServer.Core.csproj" />
+    <ProjectReference Include="..\RofoServer.Infrastructure\RofoServer.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,19 +11,19 @@ using Microsoft.Extensions.Configuration;
 
 namespace RofoServer.Core.Logic.Authentication
 {
-    public class AuthenticateHandler : IRequestHandler<AuthenticateQuery, AuthenticateResponseModel>
+    public class AuthenticateHandler : IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>
     {
-        private IRepository _repo;
+        private IRofoManager _repo;
         private ITokenService _tokenService;
         private IConfiguration _config;
 
-        public AuthenticateHandler(IRepository repo, ITokenService tokenService, IConfiguration config) {
+        public AuthenticateHandler(IRofoManager repo, ITokenService tokenService, IConfiguration config) {
             _repo = repo;
             _tokenService = tokenService;
             _config = config;
         }
 
-        public async Task<AuthenticateResponseModel> Handle(AuthenticateQuery request, CancellationToken cancellationToken) {
+        public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
             var user = await _repo.GetUserByEmail(request.Request.Email);
 
             if (!PasswordHasher.CheckPassword(user.PasswordHash, request.Request.Password))
@@ -38,7 +38,7 @@ namespace RofoServer.Core.Logic.Authentication
                     new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Name, user.UserName),
                 }, _config["Rofos:ApiKey"]),
-                RefreshToken = _tokenService.GenerateRefreshToken(request.Request.)
+                //RefreshToken = _tokenService.GenerateRefreshToken(request.Request.)
             };
 
         }

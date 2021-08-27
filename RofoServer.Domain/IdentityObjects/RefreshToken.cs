@@ -10,7 +10,7 @@ namespace RofoServer.Domain.IdentityObjects
     {
         [Key]
         [JsonIgnore]
-        public int Id { get; set; }
+        public int RefreshTokenId { get; set; }
         public string Token { get; set; }
         public DateTime Expires { get; set; }
         public DateTime Created { get; set; }

@@ -2,17 +2,20 @@
 using RofoServer.Domain;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.RofoObjects;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace RofoServer.Persistence
 {
-    public class RofoRepository:IRepository
+    public class RofoRepository:IRofoManager
     {
-        public RofoRepository() {
+        private RofoDbContext _cxt;
+        public RofoRepository(RofoDbContext rofoContext) {
+            _cxt = rofoContext;
         }
         public async Task<User> GetUserByEmail(string email) {
             await using var cxt = new RofoDbContext();
-            return await cxt.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
+            return await _cxt.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
         }
 
         public async Task CreateUser(User user) {
@@ -29,7 +32,7 @@ namespace RofoServer.Persistence
 
         public async Task<Rofo> GetRofo(int id) {
             await using var cxt = new RofoDbContext();
-            return await cxt.Rofos.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            return await cxt.Rofos.FirstOrDefaultAsync(x => x.RofoId.Equals(id));
         }
     }
 }

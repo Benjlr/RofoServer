@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 
 namespace RofoServer.Domain
 {
-    public interface IRepository
+    public interface IRofoManager
     {
         Task<User> GetUserByEmail(string email);
         Task CreateUser(User user);
 
         Task AddRofo(Rofo rofo);
         Task<Rofo> GetRofo(int id);
+
+        
 
 
     }
