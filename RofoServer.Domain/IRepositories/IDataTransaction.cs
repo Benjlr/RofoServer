@@ -1,6 +1,5 @@
-
 using System;
-using RofoServer.Domain.IdentityObjects;
+using System.Threading.Tasks;
 
 namespace RofoServer.Domain.IRepositories
 {
@@ -8,8 +7,8 @@ namespace RofoServer.Domain.IRepositories
     public interface IDataTransaction : IDisposable
     {
         IRofoRepository Rofos { get; }
-        User Users { get; }
-        int Complete();
+        IUserRepository Users { get; }
+        Task<int> Complete();
 
     }
 

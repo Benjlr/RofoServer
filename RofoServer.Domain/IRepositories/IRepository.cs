@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace RofoServer.Domain.IRepositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        TEntity Get(int Id);
-        IEnumerable<TEntity> GetAll();
+        Task<TEntity> Get(int Id);
+        Task<List<TEntity>> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
 
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);

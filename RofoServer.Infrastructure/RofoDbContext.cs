@@ -1,20 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using RofoServer.Domain;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.RofoObjects;
+using System;
 
 namespace RofoServer.Persistence
 {
-    public class RofoDbContext : DbContext, IRofoREpository
+    public class RofoDbContext : DbContext
     {
-        public  DbSet<Rofo> Rofos { get; set; }
-        public  DbSet<User> Users { get; set; }
-        public  DbSet<UserClaims> UserClaims { get; set; }
-        public  DbSet<Claims> Claims { get; set; }
+        public virtual DbSet<Rofo> Rofos { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserClaims> UserClaims { get; set; }
+        public virtual DbSet<Claims> Claims { get; set; }
 
         public RofoDbContext(DbContextOptions<RofoDbContext> options)
             : base(options) {
@@ -31,26 +29,6 @@ namespace RofoServer.Persistence
                 .Build();
 
             optionsBuilder.UseLazyLoadingProxies().UseNpgsql(configuration.GetConnectionString("RofoDb"));
-        }
-
-        public Task<User> GetUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AddRofo(Rofo rofo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Rofo> GetRofo(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 

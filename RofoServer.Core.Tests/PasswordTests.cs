@@ -1,4 +1,5 @@
 ﻿using RofoServer.Core.Logic;
+using RofoServer.Core.Utils;
 using Xunit;
 
 namespace RofoServer.Core.Tests

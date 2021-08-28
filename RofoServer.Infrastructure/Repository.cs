@@ -1,58 +1,44 @@
-
-
+using RofoServer.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using RofoServer.Domain.IRepositories;
+using System.Threading.Tasks;
 
-namespace RofoServer.Infrastructure{
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class{
-        protected readonly DbContext Cxt;
-        private DbSet<TEntity> _dbSet => Cxt.Set<TEntity>();
-        public Repository(DbContext cxt){
+namespace RofoServer.Persistence
+{
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    {
+        protected readonly Microsoft.EntityFrameworkCore.DbContext Cxt;
+        private Microsoft.EntityFrameworkCore.DbSet<TEntity> _dbSet => Cxt.Set<TEntity>();
+        public Repository(Microsoft.EntityFrameworkCore.DbContext cxt){
             Cxt = cxt;
         }
 
-        public void Add(TEntity entity)
-        {
+        public void Add(TEntity entity) =>
             _dbSet.Add(entity);
-        }
 
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
+        public void AddRange(IEnumerable<TEntity> entities) =>
             _dbSet.AddRange(entities);
-        }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _dbSet.Where(predicate);
-        }
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) =>
+            _dbSet.Where(predicate);
 
-        public TEntity Get(int Id)
-        {
-            return _dbSet.Find(Id);
-        }
+        public Task<TEntity> Get(int Id)=>
+            _dbSet.FindAsync(Id).AsTask();
 
-        public IEnumerable<TEntity> GetAll()
-        {
-            return _dbSet.ToList();
-        }
+        public Task<List<TEntity>> GetAll()=>
+            _dbSet.ToListAsync();
 
-        public void Remove(TEntity entity)
-        {
+        public void Remove(TEntity entity)=>
             _dbSet.Remove(entity);
-        }
 
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
+        public void RemoveRange(IEnumerable<TEntity> entities) =>
             _dbSet.RemoveRange(entities);
-        }
 
-        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _dbSet.SingleOrDefault(predicate);
-        }
+        public Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate)=>
+            _dbSet.SingleOrDefaultAsync(predicate);
+        
     }
 }

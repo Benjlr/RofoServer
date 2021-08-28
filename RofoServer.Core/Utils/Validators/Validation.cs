@@ -1,4 +1,4 @@
-﻿namespace RofoServer.Core.Validators
+﻿namespace RofoServer.Core.Utils.Validators
 {
     public  class Validation
     {

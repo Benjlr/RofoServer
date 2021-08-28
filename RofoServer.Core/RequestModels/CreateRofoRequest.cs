@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static RofoServer.Core.Validators.Validation.Rofo;
+using static RofoServer.Core.Utils.Validators.Validation.Rofo;
 
 namespace RofoServer.Core.RequestModels
 {

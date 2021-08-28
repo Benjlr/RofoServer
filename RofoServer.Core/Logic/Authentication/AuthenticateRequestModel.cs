@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RofoServer.Core.RequestModels
+namespace RofoServer.Core.Logic.Authentication
 {
     public class AuthenticateRequestModel
     {

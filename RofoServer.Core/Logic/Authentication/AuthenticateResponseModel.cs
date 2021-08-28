@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace RofoServer.Core.ResponseModels
+namespace RofoServer.Core.Logic.Authentication
 {
     public class AuthenticateResponseModel
     {

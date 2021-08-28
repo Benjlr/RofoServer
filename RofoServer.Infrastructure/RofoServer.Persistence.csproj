@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RofoServer.Core\RofoServer.Core.csproj" />
     <ProjectReference Include="..\RofoServer.Domain\RofoServer.Domain.csproj" />
   </ItemGroup>
 

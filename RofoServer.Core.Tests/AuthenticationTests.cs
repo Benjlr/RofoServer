@@ -1,14 +1,11 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Moq;
-using RofoServer.Core.Logic;
 using RofoServer.Core.Logic.Authentication;
-using RofoServer.Core.RequestModels;
+using RofoServer.Core.Utils;
+using RofoServer.Core.Utils.TokenService;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Persistence;
+using System.Threading;
 using Xunit;
-using Xunit.Sdk;
 
 namespace RofoServer.Core.Tests
 {

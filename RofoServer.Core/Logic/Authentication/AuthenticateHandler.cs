@@ -1,26 +1,20 @@
 ﻿using MediatR;
-using RofoServer.Core.ResponseModels;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
+using RofoServer.Core.Utils;
+using RofoServer.Core.Utils.TokenService;
+using RofoServer.Domain.IRepositories;
 using System.Threading;
 using System.Threading.Tasks;
-using RofoServer.Core.Logic.TokenService;
-using RofoServer.Domain;
-using Microsoft.Extensions.Configuration;
 
 namespace RofoServer.Core.Logic.Authentication
 {
     public class AuthenticateHandler : IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>
     {
-        private IRofoManager _repo;
-        private ITokenService _tokenService;
-        private IConfiguration _config;
+        private readonly IUserRepository _repo;
+        private readonly ITokenServices _tokenService;
 
-        public AuthenticateHandler(IRofoManager repo, ITokenService tokenService, IConfiguration config) {
+        public AuthenticateHandler(IUserRepository repo, ITokenServices tokenService) {
             _repo = repo;
             _tokenService = tokenService;
-            _config = config;
         }
 
         public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
@@ -33,12 +27,8 @@ namespace RofoServer.Core.Logic.Authentication
             {
                 Email = user.Email,
                 Username = user.UserName,
-                JwtToken = _tokenService.GenerateJWTToken(new List<Claim>()
-                {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.UserName),
-                }, _config["Rofos:ApiKey"]),
-                //RefreshToken = _tokenService.GenerateRefreshToken(request.Request.)
+                JwtToken = _tokenService.GenerateJwtToken(user.Email),
+                RefreshToken = _tokenService.GenerateRefreshToken().Token
             };
 
         }
