@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RofoServer.Persistence
 {
-    public class RofoRepository:IRofoManager
+    public class RofoRepository
     {
         private RofoDbContext _cxt;
         public RofoRepository(RofoDbContext rofoContext) {
