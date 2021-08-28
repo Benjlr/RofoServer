@@ -5,8 +5,10 @@ namespace RofoServer.Persistence
 {
     public class RofoRepository : Repository<Rofo>, IRofoRepository
     {
-        public RofoDbContext RofoContext => Cxt as RofoDbContext;
+        private RofoDbContext RofoContext => _cxt as RofoDbContext;
         public RofoRepository(RofoDbContext context) :base(context)
         { }
+
+
     }
 }

@@ -1,7 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RofoServer.Domain.IRepositories;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,35 +11,49 @@ namespace RofoServer.Persistence
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly Microsoft.EntityFrameworkCore.DbContext Cxt;
-        private Microsoft.EntityFrameworkCore.DbSet<TEntity> _dbSet => Cxt.Set<TEntity>();
-        public Repository(Microsoft.EntityFrameworkCore.DbContext cxt){
-            Cxt = cxt;
+        protected readonly DbContext _cxt;
+
+        private DbSet<TEntity> _dbSet => _cxt.Set<TEntity>();
+        public Repository(DbContext cxt) {
+            _cxt = cxt;
         }
 
-        public void Add(TEntity entity) =>
-            _dbSet.Add(entity);
+        public async Task<int> AddAsync(TEntity entity) {
+            await _dbSet.AddAsync(entity);
+            return await _cxt.SaveChangesAsync();
+        }
 
-        public void AddRange(IEnumerable<TEntity> entities) =>
-            _dbSet.AddRange(entities);
+        public async Task<int> AddRangeAsync(IEnumerable<TEntity> entities) {
+            await _dbSet.AddRangeAsync(entities);
+            return await _cxt.SaveChangesAsync();
+        }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) =>
             _dbSet.Where(predicate);
 
-        public Task<TEntity> Get(int Id)=>
-            _dbSet.FindAsync(Id).AsTask();
+        public async Task<TEntity> GetAsync(int Id)=>
+            await _dbSet.FindAsync(Id).AsTask();
 
-        public Task<List<TEntity>> GetAll()=>
-            _dbSet.ToListAsync();
+        public async Task<List<TEntity>> GetAllAsync()=>
+            await _dbSet.ToListAsync();
 
-        public void Remove(TEntity entity)=>
+        public async Task<int> RemoveAsync(TEntity entity) {
             _dbSet.Remove(entity);
+            return await _cxt.SaveChangesAsync();
+        }
 
-        public void RemoveRange(IEnumerable<TEntity> entities) =>
+        public async Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities) {
             _dbSet.RemoveRange(entities);
+            return await _cxt.SaveChangesAsync();
+        }
 
-        public Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate)=>
-            _dbSet.SingleOrDefaultAsync(predicate);
-        
+        public async Task<int> UpdateAsync(TEntity entity) {
+            _dbSet.Update(entity);
+            return await _cxt.SaveChangesAsync();
+        }
+
+        public async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) =>
+            await _dbSet.SingleOrDefaultAsync(predicate);
+
     }
 }

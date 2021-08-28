@@ -7,16 +7,17 @@ namespace RofoServer.Domain.IRepositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> Get(int Id);
-        Task<List<TEntity>> GetAll();
+        Task<TEntity> GetAsync(int Id);
+        Task<List<TEntity>> GetAllAsync();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        Task<TEntity> SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
-        void Add(TEntity entity);
-        void AddRange(IEnumerable<TEntity> entities);
+        Task<int> AddAsync(TEntity entity);
+        Task<int> AddRangeAsync(IEnumerable<TEntity> entities);
 
-        void Remove(TEntity entity);
-        void RemoveRange(IEnumerable<TEntity> entities);
+        Task<int> RemoveAsync(TEntity entity);
+        Task<int> RemoveRangeAsync(IEnumerable<TEntity> entities);
+        Task<int> UpdateAsync(TEntity entity);
 
     }
 }

@@ -72,7 +72,7 @@ namespace RofoServer.Controller
                 return BadRequest(ModelState.ErrorCount);
 
             //var response = await _mediator.Send(new AuthenticationCommand(req, this.HttpContext.GetIpAddress()));
-            var response = await _mediator.Send(new AuthenticationCommand(req, "this.HttpContext.GetIpAddress()"));
+            var response = await _mediator.Send(new AuthenticationCommand(req));
 
             Response.SetCookie(new CookieOptions
             {

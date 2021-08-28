@@ -1,17 +1,14 @@
 ﻿using MediatR;
-using RofoServer.Core.RequestModels;
 
 namespace RofoServer.Core.Logic.Authentication
 {
     public class AuthenticationCommand : IRequest<AuthenticateResponseModel>
     {
         public AuthenticateRequestModel Request { get; set; }
-        public string IpAddress { get; set; }
 
-        public AuthenticationCommand(AuthenticateRequestModel req, string ipAddress)
+        public AuthenticationCommand(AuthenticateRequestModel req)
         {
             Request = req;
-            IpAddress = ipAddress;
         }
 
     }
