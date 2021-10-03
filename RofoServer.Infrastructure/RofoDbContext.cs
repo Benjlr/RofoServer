@@ -11,8 +11,6 @@ namespace RofoServer.Persistence
     {
         public virtual DbSet<Rofo> Rofos { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<UserClaims> UserClaims { get; set; }
-        public virtual DbSet<Claims> Claims { get; set; }
 
         public RofoDbContext(DbContextOptions<RofoDbContext> options)
             : base(options) {

@@ -2,10 +2,9 @@
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Persistence
 {
@@ -16,11 +15,11 @@ namespace RofoServer.Persistence
         public UserRepository(RofoDbContext context) : base(context) {
         }
 
-        public async Task<List<Claims>> GetUserClaims(User user) =>
-            await RofoContext.UserClaims.Where(x => x.User.Id.Equals(user.Id)).Select(uc => uc.Claim).ToListAsync();
-
         public async Task<User> GetUserByEmail(string email) =>
             await RofoContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
+
+        public async Task<User> GetUserByRefreshTokenOrDefault(string refreshToken) =>
+            await RofoContext.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == refreshToken)) ?? null;
 
         public bool CheckUserPassword(User user, string password) =>
             PasswordHasher.CheckPassword(user.PasswordHash, password);
@@ -50,5 +49,6 @@ namespace RofoServer.Persistence
             user.UserAuthDetails.AccountConfirmed = true;
             await UpdateAsync(user);
         }
+
     }
 }

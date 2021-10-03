@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace RofoServer.Domain.IdentityObjects
@@ -12,8 +14,10 @@ namespace RofoServer.Domain.IdentityObjects
         [JsonIgnore]
         public string PasswordHash { get; set; }
         public virtual UserAuthentication UserAuthDetails { get; set; }
+        [JsonIgnore]
+        public virtual List<RefreshToken> RefreshTokens { get; set; }
 
-
-
+        [JsonIgnore]
+        public virtual List<UserClaim> UserClaims { get; set; }
     }
 }

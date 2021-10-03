@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Domain.IdentityObjects
 {
-    [Owned]
     public class UserAuthentication
     {
         [Key]
@@ -16,7 +13,9 @@ namespace RofoServer.Domain.IdentityObjects
         public bool AccountConfirmed { get; set; }
         public DateTime LockOutExpiry { get; set; }
         public int FailedLogInAttempts { get; set; }
+        
         [JsonIgnore]
-        public List<RefreshToken> RefreshTokens { get; set; }
+        public Guid SecurityStamp { get; set; }
+
     }
 }

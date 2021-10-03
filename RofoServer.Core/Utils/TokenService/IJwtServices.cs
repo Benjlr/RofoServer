@@ -4,9 +4,9 @@ using RofoServer.Domain.IdentityObjects;
 
 namespace RofoServer.Core.Utils.TokenService
 {
-    public interface ITokenServices
+    public interface IJwtServices
     {
-        string GenerateJwtToken(string userEmail);
+        string GenerateJwtToken(List<UserClaim> claims);
         RefreshToken GenerateRefreshToken();
         List<Claim> ValidateJwtToken(string token);
         void RotateRefreshToken(List<RefreshToken> userTokens);

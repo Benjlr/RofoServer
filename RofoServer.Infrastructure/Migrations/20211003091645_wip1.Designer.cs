@@ -10,31 +10,16 @@ using RofoServer.Persistence;
 namespace RofoServer.Persistence.Migrations
 {
     [DbContext(typeof(RofoDbContext))]
-    [Migration("20210825111916_wip")]
-    partial class wip
+    [Migration("20211003091645_wip1")]
+    partial class wip1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.Claims", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Claim")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Claims");
-                });
 
             modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>
                 {
@@ -49,39 +34,49 @@ namespace RofoServer.Persistence.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
+                    b.Property<int?>("UserAuthDetailsId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserAuthDetailsId");
+
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.UserClaims", b =>
+            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.UserAuthentication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ClaimIdId")
+                    b.Property<bool>("AccountConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("FailedLogInAttempts")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserIdId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("LockOutExpiry")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("SecurityStamp")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClaimIdId");
-
-                    b.HasIndex("UserIdId");
-
-                    b.ToTable("UserClaims");
+                    b.ToTable("UserAuthentication");
                 });
 
             modelBuilder.Entity("RofoServer.Domain.RofoObjects.Rofo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RofoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -98,7 +93,7 @@ namespace RofoServer.Persistence.Migrations
                     b.Property<DateTime>("UploadedDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("RofoId");
 
                     b.HasIndex("UploadedById");
 
@@ -107,9 +102,13 @@ namespace RofoServer.Persistence.Migrations
 
             modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>
                 {
+                    b.HasOne("RofoServer.Domain.IdentityObjects.UserAuthentication", "UserAuthDetails")
+                        .WithMany()
+                        .HasForeignKey("UserAuthDetailsId");
+
                     b.OwnsMany("RofoServer.Domain.IdentityObjects.RefreshToken", "RefreshTokens", b1 =>
                         {
-                            b1.Property<int>("Id")
+                            b1.Property<int>("RefreshTokenId")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("integer")
                                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
@@ -141,7 +140,7 @@ namespace RofoServer.Persistence.Migrations
                             b1.Property<int>("UserId")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("Id");
+                            b1.HasKey("RefreshTokenId");
 
                             b1.HasIndex("UserId");
 
@@ -151,22 +150,37 @@ namespace RofoServer.Persistence.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.OwnsMany("RofoServer.Domain.IdentityObjects.UserClaim", "UserClaims", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("text");
+
+                            b1.Property<int>("UserId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Value")
+                                .HasColumnType("text");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserClaim");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.Navigation("RefreshTokens");
-                });
 
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.UserClaims", b =>
-                {
-                    b.HasOne("RofoServer.Domain.IdentityObjects.Claims", "ClaimId")
-                        .WithMany()
-                        .HasForeignKey("ClaimIdId");
+                    b.Navigation("UserAuthDetails");
 
-                    b.HasOne("RofoServer.Domain.IdentityObjects.User", "UserId")
-                        .WithMany()
-                        .HasForeignKey("UserIdId");
-
-                    b.Navigation("ClaimId");
-
-                    b.Navigation("UserId");
+                    b.Navigation("UserClaims");
                 });
 
             modelBuilder.Entity("RofoServer.Domain.RofoObjects.Rofo", b =>

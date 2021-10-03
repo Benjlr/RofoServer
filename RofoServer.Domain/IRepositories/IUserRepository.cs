@@ -1,14 +1,13 @@
-﻿using System;
-using RofoServer.Domain.IdentityObjects;
-using System.Collections.Generic;
+﻿using RofoServer.Domain.IdentityObjects;
+using System;
 using System.Threading.Tasks;
 
 namespace RofoServer.Domain.IRepositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        Task<List<Claims>> GetUserClaims(User user);
         Task<User> GetUserByEmail(string email);
+        Task<User> GetUserByRefreshTokenOrDefault(string refreshToken);
         bool CheckUserPassword(User user, string password);
         Task<int> AccessFailedAsync(User user);
         Task ResetAccessFailed(User user);

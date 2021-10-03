@@ -11,45 +11,38 @@ using RofoServer.Domain.IdentityObjects;
 
 namespace RofoServer.Core.Utils.TokenService
 {
-    public class TokenServices : ITokenServices
+    public class JwtServices : IJwtServices
     {
         private readonly IConfiguration _configuration;
 
-        public TokenServices(
-            IConfiguration config)
-        {
+        public JwtServices(IConfiguration config) {
             _configuration = config;
         }
 
-        public string GenerateJwtToken(string userEmail)
-        {
+        public string GenerateJwtToken(List<UserClaim> claims) {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Rofos:ApiKey"]);
             var token = tokenHandler.CreateToken(
                 new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(new[]
-                    {
-                        new Claim(ClaimTypes.Email, userEmail),
-                        new Claim(ClaimTypes.Role, "superuser"),
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration.GetSection("JWTExpiryMinutes").Value)),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
+                    Subject = new ClaimsIdentity(getClaims(claims)),
+                    Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["AppSettings:JWTExpiryMinutes"])),
+                    SigningCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(_configuration["development:ApiKey"])),
+                        SecurityAlgorithms.HmacSha512Signature)
                 });
             return tokenHandler.WriteToken(token);
         }
 
-        public RefreshToken GenerateRefreshToken()
-        {
+        public RefreshToken GenerateRefreshToken() {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             var randomBytes = new byte[64];
             rngCryptoServiceProvider.GetBytes(randomBytes);
-            return new RefreshToken
-            {
+            return new RefreshToken {
                 Token = Convert.ToBase64String(randomBytes),
-                Expires = DateTime.UtcNow.AddDays(int.Parse(_configuration.GetSection("RefreshTokenExpiryDays").Value)),
+                Expires = DateTime.UtcNow.AddDays(int.Parse(_configuration["AppSettings:RefreshTokenExpiryDays"])),
                 Created = DateTime.UtcNow,
-                CreatedByIp = _configuration.GetSection("ServerIPAddress").Value
+                CreatedByIp = _configuration["AppSettings:ServerIPAddress"]
             };
         }
 
@@ -65,10 +58,8 @@ namespace RofoServer.Core.Utils.TokenService
             return myClaims;
         }
 
-        public void RevokeDescendantRefreshTokens(RefreshToken refreshToken, List<RefreshToken> userTokens, string reason)
-        {
-            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
-            {
+        public void RevokeDescendantRefreshTokens(RefreshToken refreshToken, List<RefreshToken> userTokens, string reason) {
+            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken)) {
                 var childToken = userTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
                 if (childToken.IsActive)
                     RevokeRefreshToken(childToken, reason);
@@ -77,28 +68,24 @@ namespace RofoServer.Core.Utils.TokenService
             }
         }
 
-        public void RevokeRefreshToken(RefreshToken token, string reason = null, string replacedByToken = null)
-        {
+        public void RevokeRefreshToken(RefreshToken token, string reason = null, string replacedByToken = null) {
             token.Revoked = DateTime.UtcNow;
             token.RevokedByIp = _configuration.GetSection("ServerIPAddress").Value;
             token.ReasonRevoked = reason;
             token.ReplacedByToken = replacedByToken;
         }
 
-        public void RotateRefreshToken(List<RefreshToken> userTokens)
-        {
+        public void RotateRefreshToken(List<RefreshToken> userTokens) {
             userTokens.Add(GenerateRefreshToken());
             if (userTokens.Any(x => x.IsActive && x.Token != userTokens.Last().Token))
                 RevokeRefreshToken(userTokens.SingleOrDefault(x => x.IsActive && x.Token != userTokens.Last().Token), "Replaced by new token", userTokens.Last().Token);
             removeOldRefreshTokens(userTokens);
         }
 
-        private JwtSecurityToken validateToken(string token)
-        {
+        private JwtSecurityToken validateToken(string token) {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Rofos:ApiKey"]);
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
@@ -114,6 +101,11 @@ namespace RofoServer.Core.Utils.TokenService
             userTokens.RemoveAll(x =>
                 !x.IsActive &&
                 x.Created.AddDays(int.Parse(_configuration.GetSection("RefreshTokenExpiryDays").Value)) <= DateTime.UtcNow);
+        }
+
+        private IEnumerable<Claim> getClaims(List<UserClaim> userClaims) {
+            foreach (var t in userClaims) 
+                yield return new Claim(t.Description, t.Value);
         }
     }
 }

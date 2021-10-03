@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Domain.IdentityObjects
 {
@@ -9,7 +8,6 @@ namespace RofoServer.Domain.IdentityObjects
     public class RefreshToken
     {
         [Key]
-        [JsonIgnore]
         public int RefreshTokenId { get; set; }
         public string Token { get; set; }
         public DateTime Expires { get; set; }

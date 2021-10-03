@@ -4,21 +4,25 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace RofoServer.Persistence.Migrations
 {
-    public partial class wip : Migration
+    public partial class wip1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Claims",
+                name: "UserAuthentication",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Claim = table.Column<string>(type: "text", nullable: true)
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccountConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    LockOutExpiry = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    FailedLogInAttempts = table.Column<int>(type: "integer", nullable: false),
+                    SecurityStamp = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Claims", x => x.Id);
+                    table.PrimaryKey("PK_UserAuthentication", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -29,18 +33,25 @@ namespace RofoServer.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true)
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    UserAuthDetailsId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_UserAuthentication_UserAuthDetailsId",
+                        column: x => x.UserAuthDetailsId,
+                        principalTable: "UserAuthentication",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "RefreshToken",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    RefreshTokenId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Token = table.Column<string>(type: "text", nullable: true),
                     Expires = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
@@ -54,7 +65,7 @@ namespace RofoServer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.PrimaryKey("PK_RefreshToken", x => x.RefreshTokenId);
                     table.ForeignKey(
                         name: "FK_RefreshToken_Users_UserId",
                         column: x => x.UserId,
@@ -67,7 +78,7 @@ namespace RofoServer.Persistence.Migrations
                 name: "Rofos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    RofoId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
@@ -76,7 +87,7 @@ namespace RofoServer.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rofos", x => x.Id);
+                    table.PrimaryKey("PK_Rofos", x => x.RofoId);
                     table.ForeignKey(
                         name: "FK_Rofos_Users_UploadedById",
                         column: x => x.UploadedById,
@@ -86,29 +97,24 @@ namespace RofoServer.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserClaims",
+                name: "UserClaim",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserIdId = table.Column<int>(type: "integer", nullable: true),
-                    ClaimIdId = table.Column<int>(type: "integer", nullable: true)
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Value = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.PrimaryKey("PK_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaims_Claims_ClaimIdId",
-                        column: x => x.ClaimIdId,
-                        principalTable: "Claims",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserIdId",
-                        column: x => x.UserIdId,
+                        name: "FK_UserClaim_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -122,14 +128,14 @@ namespace RofoServer.Persistence.Migrations
                 column: "UploadedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_ClaimIdId",
-                table: "UserClaims",
-                column: "ClaimIdId");
+                name: "IX_UserClaim_UserId",
+                table: "UserClaim",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_UserIdId",
-                table: "UserClaims",
-                column: "UserIdId");
+                name: "IX_Users_UserAuthDetailsId",
+                table: "Users",
+                column: "UserAuthDetailsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -141,13 +147,13 @@ namespace RofoServer.Persistence.Migrations
                 name: "Rofos");
 
             migrationBuilder.DropTable(
-                name: "UserClaims");
-
-            migrationBuilder.DropTable(
-                name: "Claims");
+                name: "UserClaim");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "UserAuthentication");
         }
     }
 }

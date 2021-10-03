@@ -13,23 +13,23 @@ namespace RofoServer.Core.Logic.Authentication
 {
     public class AuthenticateHandler : IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>
     {
-        private readonly IUserRepository _repo;
-        private readonly ITokenServices _tokenService;
+        private readonly IRepositoryManager _repo;
+        private readonly IJwtServices _tokenService;
         protected IConfiguration _config;
         private User _user;
 
-        public AuthenticateHandler(IUserRepository repo, ITokenServices tokenService, IConfiguration config) {
+        public AuthenticateHandler(IRepositoryManager repo, IJwtServices tokenService, IConfiguration config) {
             _repo = repo;
             _tokenService = tokenService;
         }
 
         public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
-            _user = await _repo.GetUserByEmail(request.Request.Email);
+            _user = await _repo.UserRepository.GetUserByEmail(request.Request.Email);
 
             if (!await validCredentials(request.Request.Password))
                 return new AuthenticateResponseModel() { Errors = "INVALID_CREDENTIALS" };
 
-            if (isLockedOut())
+            if (await isLockedOut())
                 return new AuthenticateResponseModel() { Errors = "ACCOUNT_LOCKED" };
 
             if (!AccountConfirmed())
@@ -45,35 +45,35 @@ namespace RofoServer.Core.Logic.Authentication
         private async Task<AuthenticateResponseModel> Authenticate()
         {
             await updateRefreshTokens();
+            await _repo.Complete();
             return new AuthenticateResponseModel()
             {
                 Id = _user.Id,
                 Email = _user.Email,
-                JwtToken = _tokenService.GenerateJwtToken(_user.Email),
-                RefreshToken = _user.UserAuthDetails.RefreshTokens.Last().Token
+                JwtToken = _tokenService.GenerateJwtToken(_user.UserClaims),
+                RefreshToken = _user.RefreshTokens.Last().Token
             };
         }
 
         private async Task updateRefreshTokens()
         {
-            _tokenService.RotateRefreshToken(_user.UserAuthDetails.RefreshTokens);
-            await _repo.UpdateAsync(_user);
+            _tokenService.RotateRefreshToken(_user.RefreshTokens);
+            await _repo.UserRepository.UpdateAsync(_user);
         }
 
 
-        private async Task<bool> validCredentials(string password)
-        {
-            var checkPassword = _repo.CheckUserPassword(_user, password);
+        private async Task<bool> validCredentials(string password) {
+            var checkPassword = _repo.UserRepository.CheckUserPassword(_user, password);
             if (_user != null && !checkPassword)
                 await manageLockouts();
-
+            await _repo.Complete();
             return checkPassword;
         }
 
         private async Task manageLockouts() {
-            var failedAttempts = await _repo.AccessFailedAsync(_user);
+            var failedAttempts = await _repo.UserRepository.AccessFailedAsync(_user);
             if (failedAttempts >= int.Parse(_config["MaxFailedSignInAttempts"]))
-                await _repo.SetLockoutAsync(_user, DateTime.Now.AddMinutes(int.Parse(_config["LockoutTime"])));
+                await _repo.UserRepository.SetLockoutAsync(_user, DateTime.Now.AddMinutes(int.Parse(_config["LockoutTime"])));
         }
 
         private bool TwoFactorEnabled()
@@ -82,10 +82,11 @@ namespace RofoServer.Core.Logic.Authentication
         private bool AccountConfirmed()
             => _user.UserAuthDetails.AccountConfirmed;
 
-        private bool isLockedOut() {
+        private async Task<bool> isLockedOut() {
             var locked = _user.UserAuthDetails.LockOutExpiry > DateTime.Now;
             if (!locked)
-                _repo.ResetAccessFailed(_user);
+                await _repo.UserRepository.ResetAccessFailed(_user);
+            await _repo.Complete();
             return locked;
         }
 
