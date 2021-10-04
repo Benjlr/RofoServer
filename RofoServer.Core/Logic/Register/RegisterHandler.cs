@@ -31,6 +31,10 @@ namespace RofoServer.Core.Logic.Register
                 },
                 UserClaims = new List<UserClaim>(){new (){Description = RofoClaims.UserClaim, Value = "basic"}}
             });
+            if (result == 1) {
+
+            }
+
             await _manager.Complete();
             return result != 1 ? 
                 new RegisterResponseModel() { Errors = "SERVER_ERROR" } : 

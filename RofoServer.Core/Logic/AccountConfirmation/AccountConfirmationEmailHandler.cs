@@ -11,7 +11,6 @@ using RofoServer.Core.Utils;
 using RofoServer.Core.Utils.Emailer;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
-using Ubiquity.IdentityServer.Core.UseCases.AccountConfirmationEmail;
 
 namespace RofoServer.Core.Logic.AccountConfirmation
 {

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Ubiquity.IdentityServer.Core.UseCases.AccountConfirmationEmail;
 
 namespace RofoServer.Core.Logic.AccountConfirmation
 {

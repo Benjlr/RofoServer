@@ -8,7 +8,6 @@ using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using RofoServer.Extensions;
 using System.Net;
 using System.Threading.Tasks;
-using Ubiquity.IdentityServer.Core.UseCases.AccountConfirmationEmail;
 
 namespace RofoServer.Controller.Identity
 {
@@ -33,7 +32,7 @@ namespace RofoServer.Controller.Identity
             return Ok(await _mediator.Send(new RegisterCommand(req)));
         }
 
-        [HttpPost("send-email-confirmation")]
+        [HttpPost("request-email-confirmation")]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
