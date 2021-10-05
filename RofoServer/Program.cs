@@ -14,7 +14,8 @@ namespace RofoServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.ConfigureAppConfiguration((hostContext, builder) => builder.AddUserSecrets<Program>());
+                    webBuilder.ConfigureAppConfiguration((hostContext, builder) =>
+                        builder.AddUserSecrets<Program>());
                 });
     }
 }

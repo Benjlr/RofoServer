@@ -16,7 +16,9 @@ namespace RofoServer.Core.Utils.Emailer
             await new SendGridClient(_config["SendGridAPI"])
                 .SendEmailAsync(
                     MailHelper.CreateSingleEmail(
-                        new EmailAddress("noreply@rofos.com", "Ro Daddy"), 
+                        new EmailAddress(
+                            _config["EmailSettings:FromAddress"], 
+                            _config["EmailSettings:FromEntity"]), 
                         new EmailAddress(recipient), 
                         subject, 
                         "", 

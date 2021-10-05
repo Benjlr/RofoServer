@@ -17,7 +17,7 @@ namespace RofoServer.Core.Logic.AccountConfirmation
     public class AccountConfirmationEmailHandler : IRequestHandler<AccountConfirmationEmailCommand, AccountConfirmationEmailResponseModel> {
         private readonly IRepositoryManager _repository;
         private readonly IEmailer _emailer;
-        private readonly IConfiguration _config;
+        private readonly ITokenGenerator _tokenGenerator;
         private AccountConfirmationEmailRequestModel _req;
         private User _user;
 
@@ -25,10 +25,11 @@ namespace RofoServer.Core.Logic.AccountConfirmation
         public AccountConfirmationEmailHandler(
             IRepositoryManager repository,
             IEmailer emailer,
-            IConfiguration config) {
+            IConfiguration config,
+            ITokenGenerator tokenGen) {
             _repository = repository;
             _emailer = emailer;
-            _config = config;
+            _tokenGenerator = tokenGen;
         }
 
         public async Task<AccountConfirmationEmailResponseModel> Handle(AccountConfirmationEmailCommand request,
@@ -69,7 +70,7 @@ namespace RofoServer.Core.Logic.AccountConfirmation
         }
         
         private async Task<string> generateCode() {
-            var code = await new BasicTokenGenerator().GenerateTokenAsync(_user, "ConfirmAccount");
+            var code = await _tokenGenerator.GenerateTokenAsync(_user, "ConfirmAccount");
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             return code;
         }
