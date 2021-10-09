@@ -13,7 +13,6 @@ namespace RofoServer.Domain.IdentityObjects
         public bool AccountConfirmed { get; set; }
         public DateTime LockOutExpiry { get; set; }
         public int FailedLogInAttempts { get; set; }
-        
         [JsonIgnore]
         public Guid SecurityStamp { get; set; }
 

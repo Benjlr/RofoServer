@@ -36,7 +36,8 @@ namespace RofoServer.Core.Logic.AccountConfirmation
             CancellationToken cancellationToken) {
             _user = await _repository.UserRepository.GetUserByEmail(request.Request.Email);
             _req = request.Request;
-            if (_user == null || _user.UserAuthDetails.AccountConfirmed)
+
+            if (_user == null || _user.UserAuthDetails.AccountConfirmed || !_repository.UserRepository.CheckUserPassword(_user, _req.Password))
                 return new AccountConfirmationEmailResponseModel() { Errors = "INVALID_REQUEST" };
             
             return await generateResponse();

@@ -18,6 +18,8 @@ namespace RofoServer.Core.Logic.Register
         }
 
         public async Task<RegisterResponseModel> Handle(RegisterCommand request, CancellationToken cancellationToken) {
+            if (await _manager.UserRepository.GetUserByEmail(request.Request.Email) != null)
+                return new RegisterResponseModel() {Errors = "USER_EXISTS"};
             var result = await _manager.UserRepository.AddAsync(new User
             {
                 UserName = request.Request.Username,
@@ -36,7 +38,7 @@ namespace RofoServer.Core.Logic.Register
             }
 
             await _manager.Complete();
-            return result != 1 ? 
+            return result == 0 ? 
                 new RegisterResponseModel() { Errors = "SERVER_ERROR" } : 
                 new RegisterResponseModel();
         }
