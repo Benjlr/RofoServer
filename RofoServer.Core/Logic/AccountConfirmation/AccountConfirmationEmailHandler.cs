@@ -55,10 +55,10 @@ namespace RofoServer.Core.Logic.AccountConfirmation
         }
 
         private async Task emailCode(string url) {
-            await _emailer.SendEmailAsync(_user.Email, "Confirm your email",
+            await _emailer.SendEmailAsync(_user.Email, "Confirm your Rofo Account!",
                 $"<div>" +
                 $"<a></a><br />" +
-                $"<a>Please confirm your Ubiquity account by</a><br />" +
+                $"<a>Please confirm your rofos account by</a><br />" +
                 $"<a href='{url}'>clicking here</a>" +
                 $"</div>");
         }
@@ -72,7 +72,7 @@ namespace RofoServer.Core.Logic.AccountConfirmation
         
         private async Task<string> generateCode() {
             var code = await _tokenGenerator.GenerateTokenAsync(_user, "ConfirmAccount");
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+         //   code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             return code;
         }
     }

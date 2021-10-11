@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.IO;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RofoServer.Core.Logic.AccountConfirmation;
@@ -47,7 +48,7 @@ namespace RofoServer.Controller.Identity
             return Ok(response.Errors);
         }
 
-        [HttpPost("confirm-account")]
+        [HttpGet("confirm-account")]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
@@ -59,6 +60,9 @@ namespace RofoServer.Controller.Identity
 
             return Ok(await _mediator.Send(new ValidateAccountCommand(req)));
         }
+
+        //Make 'we have sent you email page
+        // make redirect to account confirm succeeded /failed page
 
         //[HttpPost("get-2fa-enablement-codes")]
         //[AllowAnonymous]

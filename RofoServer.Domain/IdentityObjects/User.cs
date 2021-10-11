@@ -11,14 +11,9 @@ namespace RofoServer.Domain.IdentityObjects
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        [JsonIgnore]
         public string PasswordHash { get; set; }
-        [ForeignKey("UserAuthentication")]
-        public virtual UserAuthentication UserAuthDetails { get; set; }
-        [JsonIgnore]
+        public  virtual UserAuthentication UserAuthDetails { get; set; }
         public virtual List<RefreshToken> RefreshTokens { get; set; }
-
-        [JsonIgnore]
         public virtual List<UserClaim> UserClaims { get; set; }
     }
 }

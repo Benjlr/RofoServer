@@ -17,7 +17,7 @@ namespace RofoServer.Core.Utils.Emailer
                 .SendEmailAsync(
                     MailHelper.CreateSingleEmail(
                         new EmailAddress(
-                            _config["EmailSettings:FromAddress"], 
+                            _config["EmailSettings:FromAddress"],
                             _config["EmailSettings:FromEntity"]), 
                         new EmailAddress(recipient), 
                         subject, 

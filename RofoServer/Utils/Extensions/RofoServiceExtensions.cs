@@ -14,10 +14,10 @@ using RofoServer.Core.Logic.ValidateAccount;
 using RofoServer.Core.Utils;
 using RofoServer.Core.Utils.Emailer;
 using RofoServer.Core.Utils.TokenService;
+using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
-using RofoServer.Domain.IRepositories;
 
 namespace RofoServer.Utils.Extensions
 {
@@ -26,7 +26,7 @@ namespace RofoServer.Utils.Extensions
         public static IServiceCollection AddDatabases(this IServiceCollection services, IConfiguration config)
         => services
             .AddDbContext<RofoDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("RofoDb")));
+            options.UseLazyLoadingProxies().UseNpgsql(config.GetConnectionString("RofoDb")));
 
 
 
@@ -97,8 +97,10 @@ namespace RofoServer.Utils.Extensions
 
         public static void AddApiControllers(this IServiceCollection services)
             => services
-                .AddControllers(options => options
+                .AddControllers(
+                    options => options
                     .Filters
-                    .Add<ModelOrNotFoundActionFilter>());
+                    .Add<ModelOrNotFoundActionFilter>()
+                    );
     }
 }

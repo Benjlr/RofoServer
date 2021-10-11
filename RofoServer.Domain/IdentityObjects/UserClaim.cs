@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Domain.IdentityObjects
 {
-    [Owned]
-
     public class UserClaim
     {
         [Key]

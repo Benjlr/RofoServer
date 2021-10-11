@@ -13,8 +13,8 @@ namespace RofoServer.Core.Utils
             var binWriter = new BinaryWriter(ms);
             binWriter.Write(BitConverter.GetBytes(DateTimeOffset.UtcNow.Ticks));
             binWriter.Write(BitConverter.GetBytes(user.Id));
-            binWriter.Write(Encoding.UTF8.GetBytes(purpose));
-            binWriter.Write(Encoding.UTF8.GetBytes(user.UserAuthDetails.SecurityStamp.ToString()));
+            binWriter.Write(purpose);
+            binWriter.Write(user.UserAuthDetails.SecurityStamp.ToString());
             var protectedBytes = EncryptionService.Encrypt(ms.ToArray());
             return Convert.ToBase64String(protectedBytes);
         }
