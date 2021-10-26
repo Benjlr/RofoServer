@@ -11,7 +11,7 @@ namespace RofoServer.Core.Logic.Authentication
         [Required(ErrorMessage = "Password Required")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Authenticator code required")]
-        public string AuthenticatorCode { get; set; }
+        //[Required(ErrorMessage = "Authenticator code required")]
+        //public string AuthenticatorCode { get; set; }
     }
 }

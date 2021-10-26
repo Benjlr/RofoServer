@@ -9,12 +9,12 @@ namespace RofoServer.Utils
         {
             if (context.Result is ObjectResult result)
             {
-                var model = result.Value;
+                //var model = result.Value;
 
-                if (model == null)
-                {
-                    context.Result = new NotFoundResult();
-                }
+                //if (model == null)
+                //{
+                //    context.Result = new NotFoundResult();
+                //}
             }
         }
     }

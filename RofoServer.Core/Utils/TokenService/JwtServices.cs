@@ -28,7 +28,7 @@ namespace RofoServer.Core.Utils.TokenService
                     Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["AppSettings:JWTExpiryMinutes"])),
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(_configuration["development:ApiKey"])),
+                            Encoding.ASCII.GetBytes(_configuration["Rofos:ApiKey"])),
                         SecurityAlgorithms.HmacSha512Signature)
                 });
             return tokenHandler.WriteToken(token);
@@ -100,7 +100,7 @@ namespace RofoServer.Core.Utils.TokenService
         {
             userTokens.RemoveAll(x =>
                 !x.IsActive &&
-                x.Created.AddDays(int.Parse(_configuration.GetSection("RefreshTokenExpiryDays").Value)) <= DateTime.UtcNow);
+                x.Created.AddDays(int.Parse(_configuration["AppSettings:RefreshTokenExpiryDays"])) <= DateTime.UtcNow);
         }
 
         private IEnumerable<Claim> getClaims(List<UserClaim> userClaims) {

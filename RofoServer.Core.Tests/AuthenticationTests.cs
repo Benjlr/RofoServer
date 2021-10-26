@@ -32,7 +32,7 @@ namespace RofoServer.Core.Tests
                 {
                     Email = "ben@test.com",
                     Password = "password",
-                    AuthenticatorCode = ""
+                    //AuthenticatorCode = ""
                 }), new CancellationToken()).Result;
 
             Assert.Equal("ben@test.com", result.Email);
@@ -49,7 +49,7 @@ namespace RofoServer.Core.Tests
                 {
                     Email = "ben@test.com",
                     Password = "wrongpassword",
-                    AuthenticatorCode = ""
+                    //AuthenticatorCode = ""
                 }), new CancellationToken()).Result;
             
             Assert.True(!string.IsNullOrWhiteSpace(result.Errors));
@@ -69,7 +69,7 @@ namespace RofoServer.Core.Tests
                     {
                         Email = "ben@test.com",
                         Password = "wrongpassword",
-                        AuthenticatorCode = ""
+                        //AuthenticatorCode = ""
                     }), new CancellationToken()).Result;
             }
 
@@ -86,7 +86,7 @@ namespace RofoServer.Core.Tests
                 {
                     Email = "ben@test.com",
                     Password = "wrongpassword",
-                    AuthenticatorCode = ""
+                    //AuthenticatorCode = ""
                 }), new CancellationToken()).Result;
 
             Assert.True(!string.IsNullOrWhiteSpace(result.Errors));
@@ -103,7 +103,7 @@ namespace RofoServer.Core.Tests
                 {
                     Email = "ben@test.com",
                     Password = "wrongpassword",
-                    AuthenticatorCode = ""
+                    //AuthenticatorCode = ""
                 }), new CancellationToken()).Result;
 
             Assert.True(!string.IsNullOrWhiteSpace(result.Errors));

@@ -2,8 +2,8 @@
 {
     public class AccountConfirmationEmailResponseModel : ResponseBase
     {
-        public string ValidationCode { get; set; }
-        public string CallbackUrl { get; set; }
+        //public string ValidationCode { get; set; }
+        //public string CallbackUrl { get; set; }
 
     }
 }

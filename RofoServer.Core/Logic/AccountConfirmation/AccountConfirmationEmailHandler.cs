@@ -49,8 +49,8 @@ namespace RofoServer.Core.Logic.AccountConfirmation
             await emailCode(url);
 
             return new AccountConfirmationEmailResponseModel() {
-                CallbackUrl = url,
-                ValidationCode = code
+                //CallbackUrl = url,
+                //ValidationCode = code
             };
         }
 

@@ -35,8 +35,8 @@ namespace RofoServer.Core.Logic.Authentication
             if (!AccountConfirmed())
                 return new AuthenticateResponseModel() { Errors = "EMAIL_CONFIRMATION_REQUIRED" };
 
-            if (TwoFactorEnabled() && !validTwoFactorCode(request.Request.AuthenticatorCode))
-                return new AuthenticateResponseModel() { Errors = "INVALID_AUTHENTICATOR_CODE" };
+            //if (TwoFactorEnabled() && !validTwoFactorCode(request.Request.AuthenticatorCode))
+            //    return new AuthenticateResponseModel() { Errors = "INVALID_AUTHENTICATOR_CODE" };
 
             return await Authenticate();
         }
@@ -49,6 +49,7 @@ namespace RofoServer.Core.Logic.Authentication
             return new AuthenticateResponseModel()
             {
                 Id = _user.Id,
+                Username = _user.UserName,
                 Email = _user.Email,
                 JwtToken = _tokenService.GenerateJwtToken(_user.UserClaims),
                 RefreshToken = _user.RefreshTokens.Last().Token

@@ -44,8 +44,7 @@ namespace RofoServer.Controller.Identity
                 return BadRequest(ModelState.GetErrors());
 
             req.ConfirmationEndpoint = Url.Action(action: "ValidateAccount", controller: "Register", values: null, protocol: this.Request.Scheme);
-            var response = await _mediator.Send(new AccountConfirmationEmailCommand(req));
-            return Ok(response.Errors);
+            return Ok(await _mediator.Send(new AccountConfirmationEmailCommand(req)));
         }
 
         [HttpGet("confirm-account")]
