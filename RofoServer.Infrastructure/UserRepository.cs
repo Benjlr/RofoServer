@@ -15,8 +15,11 @@ namespace RofoServer.Persistence
         public UserRepository(RofoDbContext context) : base(context) {
         }
 
-        public async Task<User> GetUserByEmail(string email) =>
-            await RofoContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(email));
+        public Task<User> GetUserByEmail(string email) {
+            var allUsers = RofoContext.Users.Select(u => u).ToList();
+           return RofoContext.Users.SingleOrDefaultAsync(x => x.Email == email);
+        }
+
 
         public async Task<User> GetUserByRefreshTokenOrDefault(string refreshToken) =>
             await RofoContext.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == refreshToken)) ?? null;

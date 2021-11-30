@@ -18,6 +18,7 @@ using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
+using RofoServer.Core.Logic.CreateGroup;
 
 namespace RofoServer.Utils.Extensions
 {
@@ -65,6 +66,7 @@ namespace RofoServer.Utils.Extensions
                 .AddScoped(typeof(RefreshTokenRequestModel))
                 .AddScoped(typeof(RegisterRequestModel))
                 .AddScoped(typeof(RevokeRefreshTokenRequestModel))
+                .AddScoped(typeof(CreateGroupRequestModel))
 
                 .AddScoped(typeof(AccountConfirmationEmailCommand))
                 .AddScoped(typeof(AuthenticationCommand))
@@ -72,6 +74,7 @@ namespace RofoServer.Utils.Extensions
                 .AddScoped(typeof(RefreshTokenCommand))
                 .AddScoped(typeof(RegisterCommand))
                 .AddScoped(typeof(RevokeRefreshTokenCommand))
+                .AddScoped(typeof(CreateGroupCommand))
 
                 .AddScoped(typeof(IRequestHandler<AccountConfirmationEmailCommand, AccountConfirmationEmailResponseModel>), typeof(AccountConfirmationEmailHandler))
                 .AddScoped(typeof(IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>), typeof(AuthenticateHandler))
@@ -79,6 +82,7 @@ namespace RofoServer.Utils.Extensions
                 .AddScoped(typeof(IRequestHandler<RefreshTokenCommand, RefreshTokenResponseModel>), typeof(RefreshTokenHandler))
                 .AddScoped(typeof(IRequestHandler<RegisterCommand, RegisterResponseModel>), typeof(RegisterHandler))
                 .AddScoped(typeof(IRequestHandler<RevokeRefreshTokenCommand, RevokeRefreshTokenResponseModel>), typeof(RevokeRefreshTokenHandler))
+                .AddScoped(typeof(IRequestHandler<CreateGroupCommand, CreateGroupResponseModel>), typeof(CreateGroupHandler))
                 .AddMediatR(AppDomain.CurrentDomain.Load("RofoServer.Core"));
 
 

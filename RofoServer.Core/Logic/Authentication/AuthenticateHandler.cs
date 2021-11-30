@@ -24,8 +24,8 @@ namespace RofoServer.Core.Logic.Authentication
         }
 
         public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
-            _user = await _repo.UserRepository.GetUserByEmail(request.Request.Email);
 
+            _user = await _repo.UserRepository.GetUserByEmail(request.Request.Email);
             if (!await validCredentials(request.Request.Password))
                 return new AuthenticateResponseModel() { Errors = "INVALID_CREDENTIALS" };
 

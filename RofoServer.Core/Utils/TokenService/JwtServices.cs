@@ -105,7 +105,7 @@ namespace RofoServer.Core.Utils.TokenService
 
         private IEnumerable<Claim> getClaims(List<UserClaim> userClaims) {
             foreach (var t in userClaims) 
-                yield return new Claim(t.Description, t.Value);
+                yield return new Claim(t.Description, t.Group.Name);
         }
     }
 }

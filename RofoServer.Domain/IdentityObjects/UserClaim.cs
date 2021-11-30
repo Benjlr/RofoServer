@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+using RofoServer.Domain.RofoObjects;
 
 namespace RofoServer.Domain.IdentityObjects
 {
@@ -7,8 +7,8 @@ namespace RofoServer.Domain.IdentityObjects
     {
         [Key]
         public int Id { get; set; }
+        public virtual RofoGroup Group { get; set; }
         public string Description { get; set; }
-        public string Value { get; set; }
     }
 
 }

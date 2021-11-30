@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MediatR;
+﻿using MediatR;
 using RofoServer.Core.Utils;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,8 +29,7 @@ namespace RofoServer.Core.Logic.Register
                     TwoFactorEnabled = false,
                     AccountConfirmed = false,
                     SecurityStamp = Guid.NewGuid(),
-                },
-                UserClaims = new List<UserClaim>(){new (){Description = RofoClaims.UserClaim, Value = "basic"}}
+                }
             });
             if (result == 1) {
 
@@ -43,11 +41,4 @@ namespace RofoServer.Core.Logic.Register
                 new RegisterResponseModel();
         }
     }
-
-    public class RofoClaims
-    {
-        public static string UserClaim = "RofoUser";
-
-    }
-
 }

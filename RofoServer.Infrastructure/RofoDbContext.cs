@@ -9,8 +9,8 @@ namespace RofoServer.Persistence
 {
     public class RofoDbContext : DbContext
     {
-        public virtual DbSet<Rofo> Rofos { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public  DbSet<Rofo> Rofos { get; set; }
+        public  DbSet<User> Users { get; set; }
 
         public RofoDbContext(DbContextOptions<RofoDbContext> options)
             : base(options) {
@@ -20,19 +20,21 @@ namespace RofoServer.Persistence
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            //IConfigurationRoot configuration = new ConfigurationBuilder()
-            //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            //    .AddJsonFile("appsettings.json")
-            //    .Build();
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    IConfigurationRoot configuration = new ConfigurationBuilder()
+        //        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+        //        .AddJsonFile("appsettings.json")
+        //        .Build();
 
-            //optionsBuilder.UseLazyLoadingProxies().UseNpgsql(configuration.GetConnectionString("RofoDb"));
-        }
+        //    optionsBuilder.UseLazyLoadingProxies().UseNpgsql(configuration.GetConnectionString("RofoDb"));
+        //}
     }
 
     public class DesignTimeContext : IDesignTimeDbContextFactory<RofoDbContext>
     {
-        public RofoDbContext CreateDbContext(string[] args) {
+        public RofoDbContext CreateDbContext(string[] args)
+        {
 
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
