@@ -1,7 +1,6 @@
-﻿using System;
+﻿using RofoServer.Domain.IdentityObjects;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
-using RofoServer.Domain.IdentityObjects;
 
 namespace RofoServer.Domain.RofoObjects
 {
@@ -12,7 +11,7 @@ namespace RofoServer.Domain.RofoObjects
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public virtual User UploadedBy { get; set; }
-        public virtual Group Group { get; set; }
+        public virtual RofoGroup Group { get; set; }
         public DateTime UploadedDate { get; set; }
 
 
