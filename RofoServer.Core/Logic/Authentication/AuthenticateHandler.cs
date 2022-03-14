@@ -21,6 +21,7 @@ namespace RofoServer.Core.Logic.Authentication
         public AuthenticateHandler(IRepositoryManager repo, IJwtServices tokenService, IConfiguration config) {
             _repo = repo;
             _tokenService = tokenService;
+            _config = config;
         }
 
         public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
@@ -73,7 +74,7 @@ namespace RofoServer.Core.Logic.Authentication
 
         private async Task manageLockouts() {
             var failedAttempts = await _repo.UserRepository.AccessFailedAsync(_user);
-            if (failedAttempts >= int.Parse(_config["MaxFailedSignInAttempts"]))
+            if (failedAttempts >= int.Parse(_config["AppSettings:MaxFailedSignInAttempts"]))
                 await _repo.UserRepository.SetLockoutAsync(_user, DateTime.Now.AddMinutes(int.Parse(_config["LockoutTime"])));
         }
 

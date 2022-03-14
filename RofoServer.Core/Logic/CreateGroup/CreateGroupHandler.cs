@@ -35,8 +35,8 @@ namespace RofoServer.Core.Logic.CreateGroup
                 Group = group
             };
 
-            //await _repo.RofoGroupRepository.AddAsync(group);
-            //_user.UserClaims.Add(userClaim);
+            await _repo.RofoGroupRepository.AddAsync(group);
+            _user.UserClaims.Add(userClaim);
 
             await _repo.Complete();
             return new CreateGroupResponseModel();
