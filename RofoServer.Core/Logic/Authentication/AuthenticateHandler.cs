@@ -47,7 +47,7 @@ namespace RofoServer.Core.Logic.Authentication
         {
             await updateRefreshTokens();
             await _repo.Complete();
-            return new AuthenticateResponseModel()
+            var result = new AuthenticateResponseModel()
             {
                 Id = _user.Id,
                 Username = _user.UserName,
@@ -55,6 +55,8 @@ namespace RofoServer.Core.Logic.Authentication
                 JwtToken = _tokenService.GenerateJwtToken(_user.UserClaims),
                 RefreshToken = _user.RefreshTokens.Last().Token
             };
+
+            return result;
         }
 
         private async Task updateRefreshTokens()

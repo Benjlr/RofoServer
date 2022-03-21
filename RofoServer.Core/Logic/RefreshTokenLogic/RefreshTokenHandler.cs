@@ -31,12 +31,14 @@ namespace RofoServer.Core.Logic.RefreshTokenLogic
                 return new RefreshTokenResponseModel() { Errors = "INVALID_REFRESH_TOKEN" };
 
             await changeAndSaveToken();
-
-            return new RefreshTokenResponseModel() {
+            var result = new RefreshTokenResponseModel()
+            {
                 Email = _user.Email,
                 JwtToken = _tokenGenerator.GenerateJwtToken(_user.UserClaims),
                 RefreshToken = _user.RefreshTokens.Last().Token
             };
+
+            return result;
         }
 
         private async Task getUserAndToken(string userRefreshToken) {
