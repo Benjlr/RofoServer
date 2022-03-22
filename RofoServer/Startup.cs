@@ -31,7 +31,7 @@ namespace RofoServer
                 .UseSwaggerUI()
                 .UseRouting()
                 .UseCors(options => options
-                    .AllowAnyOrigin()
+                    .WithOrigins("http://localhost:4200").AllowAnyMethod().AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod())
                 .UseAuthentication()
