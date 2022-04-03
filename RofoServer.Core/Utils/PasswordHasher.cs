@@ -10,7 +10,6 @@ namespace RofoServer.Core.Utils
         private static int _iter = 10000;
 
         public static string HashPassword(string unHashedPassword) {
-            RandomNumberGenerator rng = new RNGCryptoServiceProvider();
             return Convert.ToBase64String(
                 HashPasswordV3(
                     password: unHashedPassword,

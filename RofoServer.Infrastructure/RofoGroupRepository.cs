@@ -16,7 +16,7 @@ namespace RofoServer.Persistence
         
         public  async Task<List<RofoGroup>> GetGroups(User user) {
             var access = await RofoContext.GroupAccess.Where(x=>x.User.Equals(user.Id)).ToListAsync();
-            return access.Select(x => x.Group).ToList();
+            return await RofoContext.Groups.Where(c=>access.Any(v=>v.Group.Equals(c.Id))).ToListAsync();
         }
 
         public async Task<RofoGroupAccess> GetGroupPermission(User user, RofoGroup group) {

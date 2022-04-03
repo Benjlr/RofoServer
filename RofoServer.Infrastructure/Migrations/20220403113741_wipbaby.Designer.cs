@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RofoServer.Persistence;
@@ -11,9 +12,10 @@ using RofoServer.Persistence;
 namespace RofoServer.Persistence.Migrations
 {
     [DbContext(typeof(RofoDbContext))]
-    partial class RofoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220403113741_wipbaby")]
+    partial class wipbaby
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,19 +168,20 @@ namespace RofoServer.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Group")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Rights")
                         .HasColumnType("text");
 
-                    b.Property<int>("User")
+                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("User", "Group")
-                        .IsUnique();
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("GroupAccess");
                 });
@@ -259,6 +262,21 @@ namespace RofoServer.Persistence.Migrations
                     b.Navigation("Group");
 
                     b.Navigation("UploadedBy");
+                });
+
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroupAccess", b =>
+                {
+                    b.HasOne("RofoServer.Domain.RofoObjects.RofoGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("RofoServer.Domain.IdentityObjects.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>

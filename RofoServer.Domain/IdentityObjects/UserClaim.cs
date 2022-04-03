@@ -7,7 +7,8 @@ namespace RofoServer.Domain.IdentityObjects
     {
         [Key]
         public int Id { get; set; }
-        public Claim Claim { get; set; }
+        public string Type { get; set; }
+        public string Value { get; set; }
     }
 
 }

@@ -1,14 +1,15 @@
-﻿using RofoServer.Domain.IdentityObjects;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace RofoServer.Domain.RofoObjects
+namespace RofoServer.Domain.RofoObjects;
+
+[Index("User", "Group", IsUnique = true)]
+
+public class RofoGroupAccess
 {
-    public class RofoGroupAccess
-    {
-        [Key]
-        public virtual User User { get; set; }
-        [Key]
-        public virtual RofoGroup Group { get; set; }
-        public string Rights { get; set; }
-    }
+    [Key] public int Id { get; set; }
+    public int User { get; set; }
+    public int Group { get; set; }
+    public string Rights { get; set; }
 }
+
