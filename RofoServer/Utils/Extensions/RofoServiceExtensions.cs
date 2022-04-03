@@ -5,12 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RofoServer.Core.Logic.AccountConfirmation;
-using RofoServer.Core.Logic.Authentication;
-using RofoServer.Core.Logic.RefreshTokenLogic;
-using RofoServer.Core.Logic.Register;
-using RofoServer.Core.Logic.RevokeToken;
-using RofoServer.Core.Logic.ValidateAccount;
 using RofoServer.Core.Utils;
 using RofoServer.Core.Utils.Emailer;
 using RofoServer.Core.Utils.TokenService;
@@ -18,7 +12,13 @@ using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
-using RofoServer.Core.Logic.Group.CreateGroup;
+using RofoServer.Core.Group.CreateGroup;
+using RofoServer.Core.User.AccountConfirmation;
+using RofoServer.Core.User.Authentication;
+using RofoServer.Core.User.RefreshTokenLogic;
+using RofoServer.Core.User.Register;
+using RofoServer.Core.User.RevokeToken;
+using RofoServer.Core.User.ValidateAccount;
 
 namespace RofoServer.Utils.Extensions
 {

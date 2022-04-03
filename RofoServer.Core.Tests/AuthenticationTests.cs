@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using RofoServer.Core.Logic.Authentication;
 using RofoServer.Core.Utils;
 using RofoServer.Core.Utils.TokenService;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Persistence;
 using System.Threading;
+using RofoServer.Core.User.Authentication;
 using Xunit;
 
 namespace RofoServer.Core.Tests

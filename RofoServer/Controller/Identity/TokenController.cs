@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RofoServer.Core.Logic.RefreshTokenLogic;
-using RofoServer.Core.Logic.RevokeToken;
 using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
+using RofoServer.Core.User.RefreshTokenLogic;
+using RofoServer.Core.User.RevokeToken;
 using RofoServer.Extensions;
 
 namespace RofoServer.Controller.Identity

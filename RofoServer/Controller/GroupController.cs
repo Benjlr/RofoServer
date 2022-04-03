@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
-using RofoServer.Core.Logic.Group.CreateGroup;
-using RofoServer.Core.Logic.Group.ViewGroups;
 using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using RofoServer.Core.Utils.TokenService;
 using RofoServer.Extensions;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using RofoServer.Core.Logic.Group.AddToGroup;
+using RofoServer.Core.Group.AddToGroup;
+using RofoServer.Core.Group.CreateGroup;
+using RofoServer.Core.Group.ViewGroups;
 
 namespace RofoServer.Controller
 {
