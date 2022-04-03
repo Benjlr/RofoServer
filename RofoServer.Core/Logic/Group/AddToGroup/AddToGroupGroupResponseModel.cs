@@ -1,6 +1,4 @@
-﻿//namespace RofoServer.Core.Logic.AddToGroup
-//{
-//    public class AddToGroupGroupResponseModel : ResponseBase
-//    {
-//    }
-//}
+﻿namespace RofoServer.Core.Logic.Group.AddToGroup;
+public class AddToGroupGroupResponseModel : ResponseBase
+    {
+    }

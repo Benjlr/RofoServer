@@ -1,17 +1,16 @@
-﻿using System.Linq;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RofoServer.Extensions;
-using System.Net;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Net.Http.Headers;
 using RofoServer.Core.Logic.Group.CreateGroup;
 using RofoServer.Core.Logic.Group.ViewGroups;
 using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using RofoServer.Core.Utils.TokenService;
+using RofoServer.Extensions;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using RofoServer.Core.Logic.Group.AddToGroup;
 
 namespace RofoServer.Controller
 {
@@ -38,22 +37,38 @@ namespace RofoServer.Controller
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetAllGRoups()
+        public async Task<IActionResult> GetAllGroups()
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrors());
 
             var accessToken = Request.Headers[HeaderNames.Authorization];
-
-
             var response = await _mediator.Send(new GetAllGroupsRequestModel()
             {
                 Email = _jwtService.GetClaimsFromToken(accessToken).FirstOrDefault(x=>x.Type.Equals("email"))?.Value ?? ""
+            });
+            return Ok(response);
+        }
+
+        [HttpPost("invite")]
+        [Authorize]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
+        [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> InviteToGroup([FromBody] AddToGroupRequestModel request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrors());
+
+            var accessToken = Request.Headers[HeaderNames.Authorization];
+            var response = await _mediator.Send(new addtogr()
+            {
+                Email = _jwtService.GetClaimsFromToken(accessToken).FirstOrDefault(x => x.Type.Equals("email"))?.Value ?? ""
             });
             return Ok(response);
         }

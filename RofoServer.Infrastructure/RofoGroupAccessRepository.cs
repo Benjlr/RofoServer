@@ -12,7 +12,7 @@ namespace RofoServer.Persistence
         { }
         
         public async Task<RofoGroupAccess> GetGroupPermission(User user, RofoGroup group) {
-            return await RofoContext.GroupAccess.FindAsync(user, group);
+            return await RofoContext.GroupAccess.FindAsync(user.Id, group.Id);
 
         }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using RofoServer.Domain.RofoObjects;
 
 namespace RofoServer.Domain.IdentityObjects
 {

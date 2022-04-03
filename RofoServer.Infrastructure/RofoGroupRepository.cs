@@ -18,17 +18,5 @@ namespace RofoServer.Persistence
             var access = await RofoContext.GroupAccess.Where(x=>x.User.Equals(user.Id)).ToListAsync();
             return await RofoContext.Groups.Where(c=>access.Any(v=>v.Group.Equals(c.Id))).ToListAsync();
         }
-
-        public async Task<RofoGroupAccess> GetGroupPermission(User user, RofoGroup group) {
-            return await RofoContext.GroupAccess.FindAsync(user, group);
-
-        }
-
-        public async Task AddOrUpdateGroupClaimAsync(RofoGroup group, User user, string rofoClaim) {
-            var existing = await GetGroupPermission(user, group);
-            existing.Rights = rofoClaim;
-
-            await RofoContext.SaveChangesAsync();
-        }
     }
 }
