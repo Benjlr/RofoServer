@@ -1,14 +1,14 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using RofoServer.Core.Utils;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 using RofoServer.Domain.RofoObjects;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace RofoServer.Core.Logic.CreateGroup
+namespace RofoServer.Core.Logic.Group.CreateGroup
 {
     public class CreateGroupHandler : IRequestHandler<CreateGroupCommand, CreateGroupResponseModel>
     {
@@ -28,15 +28,8 @@ namespace RofoServer.Core.Logic.CreateGroup
                 Name = request.Request.GroupName,
                 SecurityStamp = Guid.NewGuid()
             };
-
-            var userClaim = new UserClaim()
-            {
-                Description = RofoClaims.ReadWrite,
-                Group = group
-            };
-
             await _repo.RofoGroupRepository.AddAsync(group);
-            _user.UserClaims.Add(userClaim);
+            await _repo.RofoGroupAccessRepository.AddOrUpdateGroupClaimAsync(group, _user, RofoClaims.READ_WRITE_GROUP_CLAIM);
 
             await _repo.Complete();
             return new CreateGroupResponseModel();

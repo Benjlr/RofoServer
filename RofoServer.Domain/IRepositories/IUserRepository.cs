@@ -1,6 +1,8 @@
 ﻿using RofoServer.Domain.IdentityObjects;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using RofoServer.Domain.RofoObjects;
 
 namespace RofoServer.Domain.IRepositories
 {

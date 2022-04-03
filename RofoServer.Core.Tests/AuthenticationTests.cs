@@ -36,7 +36,7 @@ namespace RofoServer.Core.Tests
                 }), new CancellationToken()).Result;
 
             Assert.Equal("ben@test.com", result.Email);
-            Assert.Equal(new JwtServices(myConfig).GenerateJwtToken(new List<UserClaim>()), result.JwtToken);
+            Assert.Equal(new JwtServices(myConfig).GenerateJwtToken(new User()), result.JwtToken);
             Assert.True(!string.IsNullOrWhiteSpace(result.RefreshToken));
         }
 

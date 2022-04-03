@@ -18,7 +18,7 @@ using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
-using RofoServer.Core.Logic.CreateGroup;
+using RofoServer.Core.Logic.Group.CreateGroup;
 
 namespace RofoServer.Utils.Extensions
 {

@@ -52,7 +52,7 @@ namespace RofoServer.Core.Logic.Authentication
                 Id = _user.Id,
                 Username = _user.UserName,
                 Email = _user.Email,
-                JwtToken = _tokenService.GenerateJwtToken(_user.UserClaims),
+                JwtToken = _tokenService.GenerateJwtToken(_user),
                 RefreshToken = _user.RefreshTokens.Last().Token
             };
 

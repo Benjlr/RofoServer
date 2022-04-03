@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace RofoServer.Core.Logic.CreateGroup
+namespace RofoServer.Core.Logic.Group.CreateGroup
 {
     public class CreateGroupCommand : IRequest<CreateGroupResponseModel>
     {

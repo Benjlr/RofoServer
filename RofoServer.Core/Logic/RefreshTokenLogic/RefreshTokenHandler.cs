@@ -2,9 +2,7 @@
 using RofoServer.Core.Utils.TokenService;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ namespace RofoServer.Core.Logic.RefreshTokenLogic
             var result = new RefreshTokenResponseModel()
             {
                 Email = _user.Email,
-                JwtToken = _tokenGenerator.GenerateJwtToken(_user.UserClaims),
+                JwtToken = _tokenGenerator.GenerateJwtToken(_user),
                 RefreshToken = _user.RefreshTokens.Last().Token
             };
 

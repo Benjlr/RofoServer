@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using RofoServer.Domain.RofoObjects;
+using System.Security.Claims;
 
 namespace RofoServer.Domain.IdentityObjects
 {
@@ -7,8 +7,7 @@ namespace RofoServer.Domain.IdentityObjects
     {
         [Key]
         public int Id { get; set; }
-        public virtual RofoGroup Group { get; set; }
-        public string Description { get; set; }
+        public Claim Claim { get; set; }
     }
 
 }

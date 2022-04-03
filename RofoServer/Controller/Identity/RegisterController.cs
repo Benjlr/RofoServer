@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using RofoServer.Core.Logic.AccountConfirmation;
 using RofoServer.Core.Logic.Register;
 using RofoServer.Core.Logic.ValidateAccount;
-using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using RofoServer.Extensions;
 using System.Net;
 using System.Threading.Tasks;
+using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 
 namespace RofoServer.Controller.Identity
 {

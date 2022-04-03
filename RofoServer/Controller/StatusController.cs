@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace RofoServer.Controller
 {
@@ -13,7 +12,7 @@ namespace RofoServer.Controller
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Status() {
+        public IActionResult Status() {
             return Ok("Alive");
         }
 

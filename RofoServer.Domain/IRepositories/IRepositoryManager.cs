@@ -7,6 +7,7 @@ namespace RofoServer.Domain.IRepositories
     {
         IRofoRepository RofoRepository { get; set; }
         IRofoGroupRepository RofoGroupRepository { get; set; }
+        IRofoGroupAccessRepository RofoGroupAccessRepository { get; set; }
         IUserRepository UserRepository { get; set; }
 
         Task<int> Complete();

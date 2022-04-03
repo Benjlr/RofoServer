@@ -11,6 +11,7 @@ using RofoServer.Domain.IdentityObjects;
 
 namespace RofoServer.Core.Utils.TokenService
 {
+
     public class JwtServices : IJwtServices
     {
         private readonly IConfiguration _configuration;
@@ -19,12 +20,18 @@ namespace RofoServer.Core.Utils.TokenService
             _configuration = config;
         }
 
-        public string GenerateJwtToken(List<UserClaim> claims) {
+        public List<Claim> GetClaimsFromToken(string token) {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var readToken = tokenHandler.ReadJwtToken(token);
+            return readToken.Claims.ToList();
+        }
+
+        public string GenerateJwtToken(User user) {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(
                 new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(getClaims(claims)),
+                    Subject = new ClaimsIdentity(new List<Claim>(){new (RofoClaims.EMAIL_CLAIM, user.Email)}),
                     Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["AppSettings:JWTExpiryMinutes"])),
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(
@@ -35,9 +42,8 @@ namespace RofoServer.Core.Utils.TokenService
         }
 
         public RefreshToken GenerateRefreshToken() {
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             var randomBytes = new byte[64];
-            rngCryptoServiceProvider.GetBytes(randomBytes);
+            RandomNumberGenerator.Create().GetBytes(randomBytes);
             return new RefreshToken {
                 Token = Convert.ToBase64String(randomBytes),
                 Expires = DateTime.UtcNow.AddDays(int.Parse(_configuration["AppSettings:RefreshTokenExpiryDays"])),
@@ -103,9 +109,5 @@ namespace RofoServer.Core.Utils.TokenService
                 x.Created.AddDays(int.Parse(_configuration["AppSettings:RefreshTokenExpiryDays"])) <= DateTime.UtcNow);
         }
 
-        private IEnumerable<Claim> getClaims(List<UserClaim> userClaims) {
-            foreach (var t in userClaims) 
-                yield return new Claim(t.Description, t.Group.Name);
-        }
     }
 }

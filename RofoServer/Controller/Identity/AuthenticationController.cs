@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RofoServer.Core.Logic.Authentication;
-using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using System.Net;
 using System.Threading.Tasks;
+using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
 using RofoServer.Extensions;
 
 namespace RofoServer.Controller.Identity

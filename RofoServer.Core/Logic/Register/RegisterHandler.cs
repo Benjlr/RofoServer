@@ -3,6 +3,7 @@ using RofoServer.Core.Utils;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,9 +32,6 @@ namespace RofoServer.Core.Logic.Register
                     SecurityStamp = Guid.NewGuid(),
                 }
             });
-            if (result == 1) {
-
-            }
 
             await _manager.Complete();
             return result == 0 ? 

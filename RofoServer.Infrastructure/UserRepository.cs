@@ -1,10 +1,10 @@
-﻿using RofoServer.Core.Utils;
+﻿using Microsoft.EntityFrameworkCore;
+using RofoServer.Core.Utils;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Persistence
 {
@@ -19,7 +19,6 @@ namespace RofoServer.Persistence
             var allUsers = RofoContext.Users.Select(u => u).ToList();
            return RofoContext.Users.SingleOrDefaultAsync(x => x.Email == email);
         }
-
 
         public async Task<User> GetUserByRefreshTokenOrDefault(string refreshToken) =>
             await RofoContext.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == refreshToken)) ?? null;

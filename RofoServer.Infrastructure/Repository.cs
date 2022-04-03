@@ -27,14 +27,15 @@ namespace RofoServer.Persistence
             return await _cxt.SaveChangesAsync();
         }
 
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) =>
-            _dbSet.Where(predicate);
-
         public async Task<TEntity> GetAsync(int Id)=>
             await _dbSet.FindAsync(Id).AsTask();
 
         public async Task<List<TEntity>> GetAllAsync()=>
             await _dbSet.ToListAsync();
+        
+
+        public async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate) =>
+            await _dbSet.Where(predicate).ToListAsync();
 
         public async Task<int> RemoveAsync(TEntity entity) {
             _dbSet.Remove(entity);

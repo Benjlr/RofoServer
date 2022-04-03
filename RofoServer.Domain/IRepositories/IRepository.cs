@@ -9,7 +9,7 @@ namespace RofoServer.Domain.IRepositories
     {
         Task<TEntity> GetAsync(int Id);
         Task<List<TEntity>> GetAllAsync();
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<int> AddAsync(TEntity entity);

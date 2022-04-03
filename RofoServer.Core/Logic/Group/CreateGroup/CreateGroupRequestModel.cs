@@ -1,7 +1,7 @@
-﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 
-namespace RofoServer.Core.Logic.CreateGroup
+namespace RofoServer.Core.Logic.Group.CreateGroup
 {
     public class CreateGroupRequestModel : IRequest<CreateGroupRequestModel>
     {
