@@ -14,12 +14,12 @@ public class TokenController : ApiController
 {
     private readonly IMediator _mediator;
 
-    public TokenController(IMediator mediator) {
+    public TokenController(IMediator mediator):base(null) {
         _mediator = mediator;
     }
 
     [HttpPost("refresh-token")]
-    [AllowAnonymous]
+    [Authorize]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]

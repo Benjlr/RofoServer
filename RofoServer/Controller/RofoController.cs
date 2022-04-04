@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using RofoServer.Core.Utils.TokenService;
 
 namespace RofoServer.Controller;
 
@@ -9,7 +10,7 @@ public class RofoController : ApiController
 {
     private readonly IMediator _mediator;
 
-    public RofoController(IMediator mediator) {
+    public RofoController(IMediator mediator, IJwtServices jwt):base(jwt) {
         _mediator = mediator;
     }
 

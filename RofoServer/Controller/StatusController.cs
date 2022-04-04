@@ -6,7 +6,7 @@ namespace RofoServer.Controller;
 
 public class StatusController : ApiController
 {
-    public StatusController() {
+    public StatusController():base(null) {
     }
 
     [HttpGet]
