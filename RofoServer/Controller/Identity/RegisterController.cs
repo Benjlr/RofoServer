@@ -14,7 +14,7 @@ namespace RofoServer.Controller.Identity
     public class RegisterController : ApiController
     {
         private readonly IMediator _mediator;
-        public RegisterController(IMediator mediator)
+        public RegisterController(IMediator mediator):base(null)
         {
             _mediator = mediator;
         }

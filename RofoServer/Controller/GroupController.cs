@@ -1,16 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using RofoServer.Core.Utils.TokenService;
-using RofoServer.Extensions;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using RofoServer.Core;
-using RofoServer.Core.Group.AddToGroup;
 using RofoServer.Core.Group.CreateGroup;
 using RofoServer.Core.Group.ViewGroups;
+using RofoServer.Core.Utils.TokenService;
+using RofoServer.Extensions;
+using System.Net;
+using System.Threading.Tasks;
+using RofoServer.Core.Group.AddToGroup;
+using RofoServer.Core.Group.JoinGroup;
 
 namespace RofoServer.Controller;
 
@@ -58,12 +57,26 @@ public class GroupController : ApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> InviteToGroup([FromBody] AddToGroupRequestModel request) {
+    public async Task<IActionResult> InviteToGroup([FromBody] InviteToGroupRequestModel request) {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());
 
         request.Email = GetUserEmailClaim();
+        request.ConfirmationEndpoint = Url.Action("JoinGroup", "Group", null, this.Request.Scheme);
         var response = await _mediator.Send(request);
         return Ok(response);
+    }
+
+    [HttpGet("join")]
+    [AllowAnonymous]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> JoinGroup([FromQuery] JoinGroupRequestModel request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrors());
+
+        return Ok(await _mediator.Send(new JoinGroupCommand(request)));
     }
 }

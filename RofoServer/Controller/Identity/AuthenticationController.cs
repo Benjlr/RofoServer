@@ -13,7 +13,7 @@ public class AuthenticationController : ApiController
 {
     private readonly IMediator _mediator;
 
-    public AuthenticationController(IMediator mediator) {
+    public AuthenticationController(IMediator mediator) :base(null){
         _mediator = mediator;
     }
 

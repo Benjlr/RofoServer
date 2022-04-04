@@ -1,20 +1,18 @@
-﻿using System;
-using System.Text.Encodings.Web;
-using MediatR;
-using Microsoft.Extensions.Configuration;
-using RofoServer.Core.Group.CreateGroup;
-using RofoServer.Core.Utils;
-using RofoServer.Domain.IRepositories;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MediatR;
 using RofoServer.Core.User.ValidateAccount;
+using RofoServer.Core.Utils;
 using RofoServer.Core.Utils.Emailer;
 using RofoServer.Domain.IdentityObjects;
+using RofoServer.Domain.IRepositories;
 using RofoServer.Domain.RofoObjects;
+using System;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RofoServer.Core.Group.AddToGroup;
 
-public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, InviteToGroupGroupResponseModel>
+public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, InviteToGroupResponseModel>
 {
     private readonly IRepositoryManager _repo;
     private readonly ITokenGenerator _tokenGenerator;
@@ -32,19 +30,19 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
         _emailer = email;
     }
 
-    public async Task<InviteToGroupGroupResponseModel> Handle(InviteToGroupCommand request, CancellationToken cancellationToken) {
+    public async Task<InviteToGroupResponseModel> Handle(InviteToGroupCommand request, CancellationToken cancellationToken) {
         _req = request.Request;
         _user = await _repo.UserRepository.GetUserByEmail(_req.Email);
         if (_user == null)
-            return new InviteToGroupGroupResponseModel() { Errors = "INVALID USER" };
+            return new InviteToGroupResponseModel() { Errors = "INVALID USER" };
 
         _group = await _repo.RofoGroupRepository.SingleOrDefaultAsync(x => x.Id.Equals(_req.GroupId));
         if(_group == null)
-            return new InviteToGroupGroupResponseModel() { Errors = "INVALID REQUEST" };
+            return new InviteToGroupResponseModel() { Errors = "INVALID REQUEST" };
 
         var userRights = await _repo.RofoGroupAccessRepository.GetGroupPermission(_user, _group);
         if(userRights.Rights != RofoClaims.READ_WRITE_GROUP_CLAIM)
-            return new InviteToGroupGroupResponseModel() { Errors = "INVALID REQUEST" };
+            return new InviteToGroupResponseModel() { Errors = "INVALID REQUEST" };
         
         await _repo.Complete();
 
@@ -53,19 +51,22 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
         return await generateResponse();
     }
 
-    private async Task<CreateGroupResponseModel> generateResponse()
+    private async Task<InviteToGroupResponseModel> generateResponse()
     {
         var code = await generateCode();
         var url = buildUrl(code);
         await emailCode(url);
 
-        return new CreateGroupResponseModel();
+        return new InviteToGroupResponseModel();
     }
 
     private async Task emailCode(string url) {
         await _emailer.SendEmailAsync(_req.NewMemberEmail, "You have been invited to a Group!",
             $"<div>" +
             $"<a></a><br />" +
+            $"<a>You have been invited to a group! Lucky.</a><br />" +
+            $"<a>To join, you must have a confirmed ROFO account</a><br />" +
+            $"<a>If you don't, create one by</a><a href='{_req.RegisterEndpoint}'>clicking here</a><br />" +
             $"<a>Click the link below to join the {_group.Name} group by</a><br />" +
             $"<a href='{url}'>clicking here</a>" +
             $"</div>");

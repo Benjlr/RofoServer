@@ -1,17 +1,20 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using RofoServer.Core.Utils;
 using RofoServer.Domain.IRepositories;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RofoServer.Core.User.ValidateAccount;
 
 public class ValidateAccountHandler : IRequestHandler<ValidateAccountCommand, ValidateAccountResponseModel>
 {
     private readonly IRepositoryManager _repository;
+    private readonly ITokenGenerator _tokenGenerator;
 
-    public ValidateAccountHandler(IRepositoryManager users) {
+    public ValidateAccountHandler(IRepositoryManager users,
+        ITokenGenerator tokenGenerator) {
         _repository = users;
+        _tokenGenerator = tokenGenerator;
     }
 
     public async Task<ValidateAccountResponseModel> Handle(ValidateAccountCommand request, CancellationToken cancellationToken) {
@@ -19,7 +22,7 @@ public class ValidateAccountHandler : IRequestHandler<ValidateAccountCommand, Va
         if (user == null)
             return new ValidateAccountResponseModel() { Errors = "INVALID_REQUEST" };
 
-        if (!await new BasicTokenGenerator().ValidateAsync("ConfirmAccount", request.Request.ValidationCode, user))
+        if (!await _tokenGenerator.ValidateAsync("ConfirmAccount", request.Request.ValidationCode, user))
             return new ValidateAccountResponseModel() { Errors = "ACCOUNT_CODE_INVALID" };
 
         await _repository.UserRepository.SetAccountConfirmedAsync(user);

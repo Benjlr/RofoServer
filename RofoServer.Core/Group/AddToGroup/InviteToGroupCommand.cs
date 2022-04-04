@@ -2,7 +2,7 @@
 
 namespace RofoServer.Core.Group.AddToGroup;
 
-public class InviteToGroupCommand : IRequest<InviteToGroupGroupResponseModel>
+public class InviteToGroupCommand : IRequest<InviteToGroupResponseModel>
 {
     public InviteToGroupRequestModel Request { get; set; }
 
