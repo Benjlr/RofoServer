@@ -6,16 +6,16 @@ using RofoServer.Domain.RofoObjects;
 
 namespace RofoServer.Domain.IRepositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<RofoUser>
     {
-        Task<User> GetUserByEmail(string email);
-        Task<User> GetUserByRefreshTokenOrDefault(string refreshToken);
-        bool CheckUserPassword(User user, string password);
-        Task<int> AccessFailedAsync(User user);
-        Task ResetAccessFailed(User user);
-        Task SetLockoutAsync(User user, DateTime expiry);
-        Task SetTwoFactorAsync(User user, bool enable);
-        Task SetAccountConfirmedAsync(User user);
+        Task<RofoUser> GetUserByEmail(string email);
+        Task<RofoUser> GetUserByRefreshTokenOrDefault(string refreshToken);
+        bool CheckUserPassword(RofoUser user, string password);
+        Task<int> AccessFailedAsync(RofoUser user);
+        Task ResetAccessFailed(RofoUser user);
+        Task SetLockoutAsync(RofoUser user, DateTime expiry);
+        Task SetTwoFactorAsync(RofoUser user, bool enable);
+        Task SetAccountConfirmedAsync(RofoUser user);
 
     }
 }

@@ -1,15 +1,13 @@
 ﻿using MediatR;
 
-namespace RofoServer.Core.Group.CreateGroup
+namespace RofoServer.Core.Group.CreateGroup;
+
+public class CreateGroupCommand : IRequest<CreateGroupResponseModel>
 {
-    public class CreateGroupCommand : IRequest<CreateGroupResponseModel>
-    {
-        public CreateGroupRequestModel Request { get; set; }
+    public CreateGroupRequestModel Request { get; set; }
 
-        public CreateGroupCommand(CreateGroupRequestModel req)
-        {
-            Request = req;
-        }
-
+    public CreateGroupCommand(CreateGroupRequestModel req) {
+        Request = req;
     }
+
 }

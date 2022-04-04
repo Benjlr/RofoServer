@@ -7,7 +7,7 @@ namespace RofoServer.Core.Utils.TokenService
     public interface IJwtServices
     {
         List<Claim> GetClaimsFromToken(string token);
-        string GenerateJwtToken(User user);
+        string GenerateJwtToken(Domain.IdentityObjects.RofoUser user);
         RefreshToken GenerateRefreshToken();
         List<Claim> ValidateJwtToken(string token);
         void RotateRefreshToken(List<RefreshToken> userTokens);

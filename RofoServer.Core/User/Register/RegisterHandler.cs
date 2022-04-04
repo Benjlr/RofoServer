@@ -6,36 +6,33 @@ using RofoServer.Core.Utils;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 
-namespace RofoServer.Core.User.Register
+namespace RofoServer.Core.User.Register;
+
+public class RegisterHandler : IRequestHandler<RegisterCommand, RegisterResponseModel>
 {
-    public class RegisterHandler : IRequestHandler<RegisterCommand, RegisterResponseModel>
-    {
-        private readonly IRepositoryManager _manager;
+    private readonly IRepositoryManager _manager;
 
-        public RegisterHandler(IRepositoryManager manager) {
-            _manager = manager;
-        }
+    public RegisterHandler(IRepositoryManager manager) {
+        _manager = manager;
+    }
 
-        public async Task<RegisterResponseModel> Handle(RegisterCommand request, CancellationToken cancellationToken) {
-            if (await _manager.UserRepository.GetUserByEmail(request.Request.Email) != null)
-                return new RegisterResponseModel() {Errors = "USER_EXISTS"};
-            var result = await _manager.UserRepository.AddAsync(new Domain.IdentityObjects.User
+    public async Task<RegisterResponseModel> Handle(RegisterCommand request, CancellationToken cancellationToken) {
+        if (await _manager.UserRepository.GetUserByEmail(request.Request.Email) != null)
+            return new RegisterResponseModel() { Errors = "USER_EXISTS" };
+        var result = await _manager.UserRepository.AddAsync(new RofoUser
+        {
+            UserName = request.Request.Username,
+            Email = request.Request.Email,
+            PasswordHash = PasswordHasher.HashPassword(request.Request.Password),
+            UserAuthDetails = new UserAuthentication()
             {
-                UserName = request.Request.Username,
-                Email = request.Request.Email,
-                PasswordHash = PasswordHasher.HashPassword(request.Request.Password),
-                UserAuthDetails = new UserAuthentication()
-                {
-                    TwoFactorEnabled = false,
-                    AccountConfirmed = false,
-                    SecurityStamp = Guid.NewGuid(),
-                }
-            });
+                TwoFactorEnabled = false,
+                AccountConfirmed = false,
+                SecurityStamp = Guid.NewGuid(),
+            }
+        });
 
-            await _manager.Complete();
-            return result == 0 ? 
-                new RegisterResponseModel() { Errors = "SERVER_ERROR" } : 
-                new RegisterResponseModel();
-        }
+        await _manager.Complete();
+        return new RegisterResponseModel();
     }
 }

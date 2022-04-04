@@ -10,8 +10,8 @@ namespace RofoServer.Core.Utils
             var pdb =
                 new Rfc2898DeriveBytes("ajsghrtyescmmddkn", // Change this
                     new byte[] { 0x28, 0x45, 0x21, 0x52, 0x22, 0x29, 0x12 , 0x6 }); // Change this
-            MemoryStream ms = new MemoryStream();
-            Aes aes = new AesManaged();
+            var ms = new MemoryStream();
+            var aes = Aes.Create();
             aes.Key = pdb.GetBytes(aes.KeySize / 8);
             aes.IV = pdb.GetBytes(aes.BlockSize / 8);
             var cs = new CryptoStream(ms,
@@ -26,7 +26,7 @@ namespace RofoServer.Core.Utils
                 new Rfc2898DeriveBytes("ajsghrtyescmmddkn", // Change this
                     new byte[] { 0x28, 0x45, 0x21, 0x52, 0x22, 0x29, 0x12, 0x6 }); // Change this
             var ms = new MemoryStream();
-            Aes aes = new AesManaged();
+            var aes = Aes.Create();
             aes.Key = pdb.GetBytes(aes.KeySize / 8);
             aes.IV = pdb.GetBytes(aes.BlockSize / 8);
             var cs = new CryptoStream(ms,

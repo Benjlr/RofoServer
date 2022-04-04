@@ -2,6 +2,7 @@
 using RofoServer.Domain.IRepositories;
 using RofoServer.Domain.RofoObjects;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace RofoServer.Persistence
 {
@@ -11,12 +12,13 @@ namespace RofoServer.Persistence
         public RofoGroupAccessRepository(RofoDbContext context) : base(context)
         { }
         
-        public async Task<RofoGroupAccess> GetGroupPermission(User user, RofoGroup group) {
-            return await RofoContext.GroupAccess.FindAsync(user.Id, group.Id);
-
+        public async Task<RofoGroupAccess> GetGroupPermission(RofoUser user, RofoGroup group) {
+            return await RofoContext
+                    .GroupAccess
+                    .SingleOrDefaultAsync(x=> x.Group .Equals(group.Id) && x.User.Equals(user.Id));
         }
 
-        public async Task AddOrUpdateGroupClaimAsync(RofoGroup group, User user, string rofoClaim) {
+        public async Task AddOrUpdateGroupClaimAsync(RofoGroup group, RofoUser user, string rofoClaim) {
             var existing = await GetGroupPermission(user, group);
             existing.Rights = rofoClaim;
             await UpdateAsync(existing);

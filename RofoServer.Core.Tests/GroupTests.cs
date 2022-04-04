@@ -1,6 +1,5 @@
 ﻿using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.RofoObjects;
-using System.Collections.Generic;
 using Xunit;
 
 namespace RofoServer.Core.Tests
@@ -15,7 +14,7 @@ namespace RofoServer.Core.Tests
         }
         [Fact]
         public void UserShouldCreateGroup() {
-            User t = new User();
+            Domain.IdentityObjects.RofoUser t = new Domain.IdentityObjects.RofoUser();
             
             t.Email = "newUser@address";
             RofoGroup p = new RofoGroup

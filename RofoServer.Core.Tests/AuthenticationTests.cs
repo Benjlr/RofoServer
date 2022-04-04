@@ -13,7 +13,7 @@ namespace RofoServer.Core.Tests
     public class AuthenticationTests
     {
         private RepositoryManager _userManager => new RepositoryManager(Utils.TestContext());
-        User _user => new User()
+        Domain.IdentityObjects.RofoUser _user => new Domain.IdentityObjects.RofoUser()
         {
             Email = "test@email.com",
             PasswordHash = PasswordHasher.HashPassword("password"),
@@ -36,7 +36,7 @@ namespace RofoServer.Core.Tests
                 }), new CancellationToken()).Result;
 
             Assert.Equal("ben@test.com", result.Email);
-            Assert.Equal(new JwtServices(myConfig).GenerateJwtToken(new User()), result.JwtToken);
+            Assert.Equal(new JwtServices(myConfig).GenerateJwtToken(new Domain.IdentityObjects.RofoUser()), result.JwtToken);
             Assert.True(!string.IsNullOrWhiteSpace(result.RefreshToken));
         }
 

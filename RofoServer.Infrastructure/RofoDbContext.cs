@@ -7,7 +7,7 @@ namespace RofoServer.Persistence
     public class RofoDbContext : DbContext
     {
         public  DbSet<Rofo> Rofos { get; set; }
-        public  DbSet<User> Users { get; set; }
+        public  DbSet<RofoUser> Users { get; set; }
         public  DbSet<RofoGroup> Groups { get; set; }
         public  DbSet<RofoGroupAccess> GroupAccess { get; set; }
 

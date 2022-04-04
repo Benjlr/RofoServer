@@ -1,7 +1,6 @@
-﻿namespace RofoServer.Core
+﻿namespace RofoServer.Core;
+
+public class ResponseBase
 {
-    public class ResponseBase
-    {
-        public string Errors { get; set; }
-    }
+    public string Errors { get; set; }
 }

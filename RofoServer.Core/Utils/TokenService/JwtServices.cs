@@ -21,12 +21,17 @@ namespace RofoServer.Core.Utils.TokenService
         }
 
         public List<Claim> GetClaimsFromToken(string token) {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var readToken = tokenHandler.ReadJwtToken(token);
+            if (string.IsNullOrWhiteSpace(token))
+                return new List<Claim>();
+
+            var readToken = 
+                new JwtSecurityTokenHandler()
+                    .ReadJwtToken(token);
+
             return readToken.Claims.ToList();
         }
 
-        public string GenerateJwtToken(User user) {
+        public string GenerateJwtToken(Domain.IdentityObjects.RofoUser user) {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(
                 new SecurityTokenDescriptor

@@ -7,7 +7,7 @@ namespace RofoServer.Domain.IRepositories
 {
     public interface IRofoGroupRepository : IRepository<RofoGroup>
     {
-        Task<List<RofoGroup>> GetGroups(User user);
+        Task<List<RofoGroup>> GetGroups(RofoUser user);
 
     }
 }

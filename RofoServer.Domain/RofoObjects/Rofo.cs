@@ -11,7 +11,7 @@ namespace RofoServer.Domain.RofoObjects
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public bool Visible { get; set; }
-        public virtual User UploadedBy { get; set; }
+        public virtual RofoUser UploadedBy { get; set; }
         public virtual RofoGroup Group { get; set; }
         public DateTime UploadedDate { get; set; }
 

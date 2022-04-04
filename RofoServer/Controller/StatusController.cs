@@ -2,20 +2,18 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace RofoServer.Controller
+namespace RofoServer.Controller;
+
+public class StatusController : ApiController
 {
-    public class StatusController : ApiController
-    {
-        public StatusController() {
-        }
+    public StatusController() {
+    }
 
-        [HttpGet]
-        [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        public IActionResult Status() {
-            return Ok("Alive");
-        }
-
+    [HttpGet]
+    [AllowAnonymous]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public IActionResult Status() {
+        return Ok("Alive");
     }
 
 }

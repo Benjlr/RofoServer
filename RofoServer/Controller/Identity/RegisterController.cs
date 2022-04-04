@@ -1,14 +1,13 @@
-﻿using System.IO;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RofoServer.Extensions;
-using System.Net;
-using System.Threading.Tasks;
-using RofoServer.Core.ResponseModels.Ubiquity.IdentityServer.Core.Responses;
+using RofoServer.Core;
 using RofoServer.Core.User.AccountConfirmation;
 using RofoServer.Core.User.Register;
 using RofoServer.Core.User.ValidateAccount;
+using RofoServer.Extensions;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace RofoServer.Controller.Identity
 {
