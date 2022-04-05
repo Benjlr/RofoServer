@@ -45,9 +45,6 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
             return new InviteToGroupResponseModel() { Errors = "INVALID REQUEST" };
         
         await _repo.Complete();
-
-
-
         return await generateResponse();
     }
 

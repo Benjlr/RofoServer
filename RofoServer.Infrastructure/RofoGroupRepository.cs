@@ -15,8 +15,9 @@ namespace RofoServer.Persistence
         { }
         
         public  async Task<List<RofoGroup>> GetGroups(RofoUser user) {
-            var access = await RofoContext.GroupAccess.Where(x=>x.User.Equals(user.Id)).ToListAsync();
-            return await RofoContext.Groups.Where(c=>access.Any(v=>v.Group.Equals(c.Id))).ToListAsync();
+            var access = await RofoContext.GroupAccess.Where(x=>x.User.Id.Equals(user.Id)).Select(c=>c.Group.Id).ToListAsync();
+            var groups = await RofoContext.Groups.Where(c => access.Any(v => v.Equals(c.Id))).ToListAsync();
+            return groups;
         }
     }
 }

@@ -45,10 +45,11 @@ public class GroupController : ApiController
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());
 
-        var response = await _mediator.Send(new GetAllGroupsRequestModel
+        var response = await _mediator.Send(new GetGroupsCommand(new GetAllGroupsRequestModel()
         {
             Email = GetUserEmailClaim()
-        });
+
+        }));
         return Ok(response);
     }
 

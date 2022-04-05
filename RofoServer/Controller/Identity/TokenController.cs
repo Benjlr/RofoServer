@@ -19,7 +19,7 @@ public class TokenController : ApiController
     }
 
     [HttpPost("refresh-token")]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]

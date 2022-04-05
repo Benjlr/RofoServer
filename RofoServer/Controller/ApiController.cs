@@ -13,8 +13,8 @@ public abstract class ApiController : ControllerBase
     protected ApiController(IJwtServices jwt) {
         _jwtService = jwt;
     }
-    public string GetUserEmailClaim() {
-        var accessToken = Request.Headers[HeaderNames.Authorization];
+    protected string GetUserEmailClaim() {
+        var accessToken = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ","");
         return _jwtService.GetClaimsFromToken(accessToken).FirstOrDefault(x => x.Type.Equals("email"))?.Value ?? "";
     }
 }

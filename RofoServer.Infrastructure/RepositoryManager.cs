@@ -12,6 +12,7 @@ namespace RofoServer.Persistence
             UserRepository = new UserRepository(myContext);
             RofoRepository = new RofoRepository(myContext);
             RofoGroupRepository = new RofoGroupRepository(myContext);
+            RofoGroupAccessRepository = new RofoGroupAccessRepository(myContext);
         }
 
         public IRofoGroupAccessRepository RofoGroupAccessRepository { get; set; }

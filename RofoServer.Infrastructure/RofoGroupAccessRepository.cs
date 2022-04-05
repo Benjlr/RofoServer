@@ -15,13 +15,25 @@ namespace RofoServer.Persistence
         public async Task<RofoGroupAccess> GetGroupPermission(RofoUser user, RofoGroup group) {
             return await RofoContext
                     .GroupAccess
-                    .SingleOrDefaultAsync(x=> x.Group .Equals(group.Id) && x.User.Equals(user.Id));
+                    .SingleOrDefaultAsync(x=> x.Group.Id .Equals(group.Id) && x.User.Id.Equals(user.Id));
         }
 
         public async Task AddOrUpdateGroupClaimAsync(RofoGroup group, RofoUser user, string rofoClaim) {
             var existing = await GetGroupPermission(user, group);
-            existing.Rights = rofoClaim;
-            await UpdateAsync(existing);
+            if (existing != null) {
+                existing.Rights = rofoClaim;
+                await UpdateAsync(existing);
+            }
+            else {
+                existing = new RofoGroupAccess()
+                {
+                    Group = group,
+                    Rights = rofoClaim,
+                    User = user
+                };
+                await AddAsync(existing);
+            }
+
         }
     }
 }

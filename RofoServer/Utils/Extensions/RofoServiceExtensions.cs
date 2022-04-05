@@ -12,7 +12,10 @@ using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
+using RofoServer.Core.Group.AddToGroup;
 using RofoServer.Core.Group.CreateGroup;
+using RofoServer.Core.Group.JoinGroup;
+using RofoServer.Core.Group.ViewGroups;
 using RofoServer.Core.User.AccountConfirmation;
 using RofoServer.Core.User.Authentication;
 using RofoServer.Core.User.RefreshTokenLogic;
@@ -67,6 +70,9 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(RegisterRequestModel))
             .AddScoped(typeof(RevokeRefreshTokenRequestModel))
             .AddScoped(typeof(CreateGroupRequestModel))
+            .AddScoped(typeof(GetAllGroupsRequestModel))
+            .AddScoped(typeof(JoinGroupRequestModel))
+            .AddScoped(typeof(InviteToGroupRequestModel))
 
             .AddScoped(typeof(AccountConfirmationEmailCommand))
             .AddScoped(typeof(AuthenticationCommand))
@@ -75,6 +81,9 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(RegisterCommand))
             .AddScoped(typeof(RevokeRefreshTokenCommand))
             .AddScoped(typeof(CreateGroupCommand))
+            .AddScoped(typeof(GetGroupsCommand))
+            .AddScoped(typeof(JoinGroupCommand))
+            .AddScoped(typeof(InviteToGroupCommand))
 
             .AddScoped(typeof(IRequestHandler<AccountConfirmationEmailCommand, AccountConfirmationEmailResponseModel>), typeof(AccountConfirmationEmailHandler))
             .AddScoped(typeof(IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>), typeof(AuthenticateHandler))
@@ -83,6 +92,9 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(IRequestHandler<RegisterCommand, RegisterResponseModel>), typeof(RegisterHandler))
             .AddScoped(typeof(IRequestHandler<RevokeRefreshTokenCommand, RevokeRefreshTokenResponseModel>), typeof(RevokeRefreshTokenHandler))
             .AddScoped(typeof(IRequestHandler<CreateGroupCommand, CreateGroupResponseModel>), typeof(CreateGroupHandler))
+            .AddScoped(typeof(IRequestHandler<GetGroupsCommand, GetAllGroupResponseModel>), typeof(GetAllGroupsHandler))
+            .AddScoped(typeof(IRequestHandler<JoinGroupCommand, JoinGroupResponseModel>), typeof(JoinGroupHandler))
+            .AddScoped(typeof(IRequestHandler<InviteToGroupCommand, InviteToGroupResponseModel>), typeof(InviteToGroupHandler))
             .AddMediatR(AppDomain.CurrentDomain.Load("RofoServer.Core"));
 
 
