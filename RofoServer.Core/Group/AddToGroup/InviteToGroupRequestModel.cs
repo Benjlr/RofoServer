@@ -15,6 +15,8 @@ public class InviteToGroupRequestModel : IRequest<InviteToGroupRequestModel>
 
     [Required(ErrorMessage = "Access Level Required")]
     public string AccessLevel { get; set; }
+    public string Message { get; set; }
+
 
     public string CallbackUrl { get; set; }
     public string ConfirmationEndpoint { get; set; }

@@ -61,11 +61,24 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
         await _emailer.SendEmailAsync(_req.NewMemberEmail, "You have been invited to a Group!",
             $"<div>" +
             $"<a></a><br />" +
-            $"<a>You have been invited to a group! Lucky.</a><br />" +
-            $"<a>To join, you must have a confirmed ROFO account</a><br />" +
-            $"<a>If you don't, create one by</a><a href='{_req.RegisterEndpoint}'>clicking here</a><br />" +
+            $"<a>{_user.UserName} has invited you to a group! Lucky.</a><br />" +
+            $"<a></a><br />" +
+
             $"<a>Click the link below to join the {_group.Name} group by</a><br />" +
             $"<a href='{url}'>clicking here</a>" +
+            $"<a></a><br />" +
+            $"<a></a><br />" +
+
+            $"<a>To join, you must have a confirmed ROFO account</a><br />" +
+            $"<a>If you don't have an account, create one by </a><a href='{_req.RegisterEndpoint}'>clicking here</a><br />" +
+
+            $"<a></a><br />" +
+
+            $"<a>{_user.UserName} also left a message for you:</a>" +
+            $"<a></a><br />" +
+            $"<a></a><br />" +
+
+            $"<a>{_req.Message}</a><br />" +
             $"</div>");
     }
 

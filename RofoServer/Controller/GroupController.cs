@@ -64,7 +64,7 @@ public class GroupController : ApiController
 
         request.Email = GetUserEmailClaim();
         request.ConfirmationEndpoint = Url.Action("JoinGroup", "Group", null, this.Request.Scheme);
-        var response = await _mediator.Send(request);
+        var response = await _mediator.Send(new InviteToGroupCommand(request));
         return Ok(response);
     }
 
