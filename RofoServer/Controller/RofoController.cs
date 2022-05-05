@@ -15,7 +15,7 @@ public class RofoController : ApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create() {
+    public async Task<IActionResult> Upload() {
         if (ModelState.ErrorCount > 0)
             return BadRequest();
 

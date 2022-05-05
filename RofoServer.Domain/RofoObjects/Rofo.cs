@@ -1,5 +1,6 @@
 ﻿using RofoServer.Domain.IdentityObjects;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace RofoServer.Domain.RofoObjects
@@ -13,6 +14,7 @@ namespace RofoServer.Domain.RofoObjects
         public bool Visible { get; set; }
         public virtual RofoUser UploadedBy { get; set; }
         public virtual RofoGroup Group { get; set; }
+        public virtual List<RofoComment> Comments{ get; set; }
         public DateTime UploadedDate { get; set; }
 
 

@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RofoServer.Persistence;
 
+#nullable disable
+
 namespace RofoServer.Persistence.Migrations
 {
     [DbContext(typeof(RofoDbContext))]
-    [Migration("20211011085801_newwip")]
-    partial class newwip
+    [Migration("20220504112508_init-azure")]
+    partial class initazure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.10")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.RofoUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
@@ -51,8 +55,9 @@ namespace RofoServer.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("AccountConfirmed")
                         .HasColumnType("boolean");
@@ -61,7 +66,7 @@ namespace RofoServer.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("LockOutExpiry")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("SecurityStamp")
                         .HasColumnType("uuid");
@@ -78,21 +83,22 @@ namespace RofoServer.Persistence.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UserId")
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("RofoUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RofoUserId");
 
                     b.ToTable("UserClaim");
                 });
@@ -101,11 +107,15 @@ namespace RofoServer.Persistence.Migrations
                 {
                     b.Property<int>("RofoId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RofoId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
@@ -114,16 +124,69 @@ namespace RofoServer.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UploadedDate")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("boolean");
 
                     b.HasKey("RofoId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("UploadedById");
 
                     b.ToTable("Rofos");
                 });
 
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SecurityStamp")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroupAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Rights")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GroupAccess");
+                });
+
+            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.RofoUser", b =>
                 {
                     b.HasOne("RofoServer.Domain.IdentityObjects.UserAuthentication", "UserAuthDetails")
                         .WithMany()
@@ -133,17 +196,18 @@ namespace RofoServer.Persistence.Migrations
                         {
                             b1.Property<int>("RefreshTokenId")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("RefreshTokenId"));
 
                             b1.Property<DateTime>("Created")
-                                .HasColumnType("timestamp without time zone");
+                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("CreatedByIp")
                                 .HasColumnType("text");
 
                             b1.Property<DateTime>("Expires")
-                                .HasColumnType("timestamp without time zone");
+                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("ReasonRevoked")
                                 .HasColumnType("text");
@@ -152,25 +216,25 @@ namespace RofoServer.Persistence.Migrations
                                 .HasColumnType("text");
 
                             b1.Property<DateTime?>("Revoked")
-                                .HasColumnType("timestamp without time zone");
+                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("RevokedByIp")
                                 .HasColumnType("text");
 
+                            b1.Property<int>("RofoUserId")
+                                .HasColumnType("integer");
+
                             b1.Property<string>("Token")
                                 .HasColumnType("text");
 
-                            b1.Property<int>("UserId")
-                                .HasColumnType("integer");
-
                             b1.HasKey("RefreshTokenId");
 
-                            b1.HasIndex("UserId");
+                            b1.HasIndex("RofoUserId");
 
                             b1.ToTable("RefreshToken");
 
                             b1.WithOwner()
-                                .HasForeignKey("UserId");
+                                .HasForeignKey("RofoUserId");
                         });
 
                     b.Navigation("RefreshTokens");
@@ -180,21 +244,42 @@ namespace RofoServer.Persistence.Migrations
 
             modelBuilder.Entity("RofoServer.Domain.IdentityObjects.UserClaim", b =>
                 {
-                    b.HasOne("RofoServer.Domain.IdentityObjects.User", null)
+                    b.HasOne("RofoServer.Domain.IdentityObjects.RofoUser", null)
                         .WithMany("UserClaims")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("RofoUserId");
                 });
 
             modelBuilder.Entity("RofoServer.Domain.RofoObjects.Rofo", b =>
                 {
-                    b.HasOne("RofoServer.Domain.IdentityObjects.User", "UploadedBy")
+                    b.HasOne("RofoServer.Domain.RofoObjects.RofoGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("RofoServer.Domain.IdentityObjects.RofoUser", "UploadedBy")
                         .WithMany()
                         .HasForeignKey("UploadedById");
+
+                    b.Navigation("Group");
 
                     b.Navigation("UploadedBy");
                 });
 
-            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.User", b =>
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroupAccess", b =>
+                {
+                    b.HasOne("RofoServer.Domain.RofoObjects.RofoGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("RofoServer.Domain.IdentityObjects.RofoUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RofoServer.Domain.IdentityObjects.RofoUser", b =>
                 {
                     b.Navigation("UserClaims");
                 });

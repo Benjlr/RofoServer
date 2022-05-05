@@ -17,7 +17,7 @@ namespace RofoServer.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -136,6 +136,38 @@ namespace RofoServer.Persistence.Migrations
                     b.ToTable("Rofos");
                 });
 
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoComment", b =>
+                {
+                    b.Property<int>("RofoCommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RofoCommentId"));
+
+                    b.Property<int?>("ParentPhotoRofoId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UploadedById")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UploadedDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("RofoCommentId");
+
+                    b.HasIndex("ParentPhotoRofoId");
+
+                    b.HasIndex("UploadedById");
+
+                    b.ToTable("RofoComment");
+                });
+
             modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroup", b =>
                 {
                     b.Property<int>("Id")
@@ -152,6 +184,9 @@ namespace RofoServer.Persistence.Migrations
 
                     b.Property<Guid>("SecurityStamp")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("StorageLocation")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -262,6 +297,21 @@ namespace RofoServer.Persistence.Migrations
                     b.Navigation("UploadedBy");
                 });
 
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoComment", b =>
+                {
+                    b.HasOne("RofoServer.Domain.RofoObjects.Rofo", "ParentPhoto")
+                        .WithMany("Comments")
+                        .HasForeignKey("ParentPhotoRofoId");
+
+                    b.HasOne("RofoServer.Domain.IdentityObjects.RofoUser", "UploadedBy")
+                        .WithMany()
+                        .HasForeignKey("UploadedById");
+
+                    b.Navigation("ParentPhoto");
+
+                    b.Navigation("UploadedBy");
+                });
+
             modelBuilder.Entity("RofoServer.Domain.RofoObjects.RofoGroupAccess", b =>
                 {
                     b.HasOne("RofoServer.Domain.RofoObjects.RofoGroup", "Group")
@@ -280,6 +330,11 @@ namespace RofoServer.Persistence.Migrations
             modelBuilder.Entity("RofoServer.Domain.IdentityObjects.RofoUser", b =>
                 {
                     b.Navigation("UserClaims");
+                });
+
+            modelBuilder.Entity("RofoServer.Domain.RofoObjects.Rofo", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

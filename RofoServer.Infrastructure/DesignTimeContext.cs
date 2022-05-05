@@ -15,7 +15,7 @@ public class DesignTimeContext : IDesignTimeDbContextFactory<RofoDbContext>
             .AddJsonFile("appsettings.json")
             .Build();
         DbContextOptionsBuilder<RofoDbContext> optionsBuilder = new DbContextOptionsBuilder<RofoDbContext>();
-        optionsBuilder.UseLazyLoadingProxies().UseNpgsql(configuration.GetConnectionString("RofoDb"));
+        optionsBuilder.UseLazyLoadingProxies().UseNpgsql(configuration.GetConnectionString("AzureDb"));
 
         return new RofoDbContext(optionsBuilder.Options);
     }

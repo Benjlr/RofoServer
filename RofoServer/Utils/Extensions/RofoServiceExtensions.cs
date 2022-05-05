@@ -30,7 +30,7 @@ public static class RofoServiceExtensions
     public static IServiceCollection AddDatabases(this IServiceCollection services, IConfiguration config)
         => services
             .AddDbContext<RofoDbContext>(options =>
-                options.UseLazyLoadingProxies().UseNpgsql(config.GetConnectionString("RofoDb")));
+                options.UseLazyLoadingProxies().UseNpgsql(config.GetConnectionString("AzureDb")));
 
 
 
@@ -62,6 +62,7 @@ public static class RofoServiceExtensions
             .AddScoped<IJwtServices, JwtServices>()
             .AddScoped<IRepositoryManager, RepositoryManager>()
             .AddTransient<IEmailer, SendGridEmailer>()
+            .AddSingleton<IBlobService, AzureBlobService>()
 
             .AddScoped(typeof(AccountConfirmationEmailRequestModel))
             .AddScoped(typeof(AuthenticateRequestModel))

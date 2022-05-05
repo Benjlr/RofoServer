@@ -12,10 +12,12 @@ namespace RofoServer.Core.Group.CreateGroup;
 public class CreateGroupHandler : IRequestHandler<CreateGroupCommand, CreateGroupResponseModel>
 {
     private readonly IRepositoryManager _repo;
+    private IBlobService _blobber;
     private Domain.IdentityObjects.RofoUser _user;
 
-    public CreateGroupHandler(IRepositoryManager repo, IConfiguration config) {
+    public CreateGroupHandler(IRepositoryManager repo, IConfiguration config,IBlobService blobService) {
         _repo = repo;
+        _blobber = blobService;
     }
 
     public async Task<CreateGroupResponseModel> Handle(CreateGroupCommand request, CancellationToken cancellationToken) {
@@ -27,7 +29,8 @@ public class CreateGroupHandler : IRequestHandler<CreateGroupCommand, CreateGrou
         {
             Description = request.Request.Description,
             Name = request.Request.GroupName,
-            SecurityStamp = Guid.NewGuid()
+            SecurityStamp = Guid.NewGuid(),
+            StorageLocation = await _blobber.CreateDirectory(request.Request.GroupName)
         };
         await _repo.RofoGroupRepository.AddAsync(group);
         await _repo.RofoGroupAccessRepository.AddOrUpdateGroupClaimAsync(group, _user, RofoClaims.READ_WRITE_GROUP_CLAIM);

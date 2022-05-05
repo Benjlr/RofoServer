@@ -89,7 +89,9 @@ namespace RofoServer.Core.Utils.TokenService
         public void RotateRefreshToken(List<RefreshToken> userTokens) {
             userTokens.Add(GenerateRefreshToken());
             if (userTokens.Any(x => x.IsActive && x.Token != userTokens.Last().Token))
-                RevokeRefreshToken(userTokens.SingleOrDefault(x => x.IsActive && x.Token != userTokens.Last().Token), "Replaced by new token", userTokens.Last().Token);
+                foreach (var token in userTokens.Where(x => x.IsActive && x.Token != userTokens.Last().Token)) 
+                    RevokeRefreshToken(token, "Replaced by new token", userTokens.Last().Token);
+
             removeOldRefreshTokens(userTokens);
         }
 
