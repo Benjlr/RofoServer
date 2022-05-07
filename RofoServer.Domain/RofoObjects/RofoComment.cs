@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RofoServer.Domain.IdentityObjects;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RofoServer.Domain.IdentityObjects;
 
 namespace RofoServer.Domain.RofoObjects
 {

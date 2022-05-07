@@ -16,6 +16,8 @@ using RofoServer.Core.Group.AddToGroup;
 using RofoServer.Core.Group.CreateGroup;
 using RofoServer.Core.Group.JoinGroup;
 using RofoServer.Core.Group.ViewGroups;
+using RofoServer.Core.Rofo.UploadRofo;
+using RofoServer.Core.Rofo.ViewRofos;
 using RofoServer.Core.User.AccountConfirmation;
 using RofoServer.Core.User.Authentication;
 using RofoServer.Core.User.RefreshTokenLogic;
@@ -74,6 +76,8 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(GetAllGroupsRequestModel))
             .AddScoped(typeof(JoinGroupRequestModel))
             .AddScoped(typeof(InviteToGroupRequestModel))
+            .AddScoped(typeof(UploadRofoRequestModel))
+            .AddScoped(typeof(ViewRofosRequestModel))
 
             .AddScoped(typeof(AccountConfirmationEmailCommand))
             .AddScoped(typeof(AuthenticationCommand))
@@ -85,6 +89,9 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(GetGroupsCommand))
             .AddScoped(typeof(JoinGroupCommand))
             .AddScoped(typeof(InviteToGroupCommand))
+            .AddScoped(typeof(UploadRofoCommand))
+            .AddScoped(typeof(ViewRofosCommand))
+
 
             .AddScoped(typeof(IRequestHandler<AccountConfirmationEmailCommand, AccountConfirmationEmailResponseModel>), typeof(AccountConfirmationEmailHandler))
             .AddScoped(typeof(IRequestHandler<AuthenticationCommand, AuthenticateResponseModel>), typeof(AuthenticateHandler))
@@ -96,6 +103,9 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(IRequestHandler<GetGroupsCommand, GetAllGroupResponseModel>), typeof(GetAllGroupsHandler))
             .AddScoped(typeof(IRequestHandler<JoinGroupCommand, JoinGroupResponseModel>), typeof(JoinGroupHandler))
             .AddScoped(typeof(IRequestHandler<InviteToGroupCommand, InviteToGroupResponseModel>), typeof(InviteToGroupHandler))
+            .AddScoped(typeof(IRequestHandler<UploadRofoCommand, UploadRofoResponseModel>), typeof(UploadRofoHandler))
+            .AddScoped(typeof(IRequestHandler<ViewRofosCommand, ViewRofosResponseModel>), typeof(ViewRofosHandler))
+
             .AddMediatR(AppDomain.CurrentDomain.Load("RofoServer.Core"));
 
 

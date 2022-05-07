@@ -22,7 +22,7 @@ public class GetAllGroupsHandler : IRequestHandler<GetGroupsCommand, GetAllGroup
 
         return new GetAllGroupResponseModel()
         {
-            Groups = await _repo.RofoGroupRepository.GetGroups(_user)
+            Groups = await _repo.RofoGroupRepository.GetUsersGroups(_user)
         };
     }
 }

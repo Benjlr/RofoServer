@@ -1,8 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
+using RofoServer.Core;
+using RofoServer.Core.Rofo.UploadRofo;
+using RofoServer.Core.Rofo.ViewRofos;
 using RofoServer.Core.Utils.TokenService;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace RofoServer.Controller;
 
@@ -14,39 +18,53 @@ public class RofoController : ApiController
         _mediator = mediator;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Upload() {
+    [HttpPost("uploadrofo")]
+    [Authorize]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> Upload([FromBody]UploadRofoRequestModel req) {
         if (ModelState.ErrorCount > 0)
             return BadRequest();
 
-        var response = await _mediator.Send(new CancellationToken());
+        req.Email = GetUserEmailClaim();
+
+        var response = await _mediator.Send(new UploadRofoCommand(req));
         return Ok(response);
     }
 
-    //public ActionResult Index() {
-    //    throw new NotImplementedException();
-    //}
+
+    [HttpGet("viewrofos")]
+    [Authorize]
+    [ProducesResponseType((int) HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorDetail), (int) HttpStatusCode.RequestTimeout)]
+    [ProducesResponseType(typeof(ErrorDetail), (int) HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> View([FromQuery] ViewRofosRequestModel req) {
+        if (ModelState.ErrorCount > 0)
+            return BadRequest();
+
+        req.Email = GetUserEmailClaim();
+
+        var response = await _mediator.Send(new ViewRofosCommand(req));
+        return Ok(response);
+    }
 
 
-    //public ActionResult Details(int id)
-    //{
-    //    throw new NotImplementedException();
+    [HttpGet("getrofoImage")]
+    [Authorize]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetImage([FromQuery] ViewRofosRequestModel req)
+    {
+        if (ModelState.ErrorCount > 0)
+            return BadRequest();
 
-    //}
+        req.Email = GetUserEmailClaim();
 
-
-
-
-    //public ActionResult Edit(int id)
-    //{
-    //    throw new NotImplementedException();
-
-    //}
-
-    //public ActionResult Delete(int id)
-    //{
-    //    throw new NotImplementedException();
-    //}
+        var response = await _mediator.Send(new ViewRofosCommand(req));
+        return Ok(response);
+    }
 
 
 }

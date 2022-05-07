@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RofoServer.Persistence;
@@ -11,9 +12,10 @@ using RofoServer.Persistence;
 namespace RofoServer.Persistence.Migrations
 {
     [DbContext(typeof(RofoDbContext))]
-    partial class RofoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220506235704_wippo")]
+    partial class wippo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

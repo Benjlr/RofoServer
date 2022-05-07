@@ -28,7 +28,9 @@ public class JoinGroupHandler : IRequestHandler<JoinGroupCommand, JoinGroupRespo
         if (parsedToken == null)
             return new JoinGroupResponseModel() { Errors = "ACCOUNT_CODE_INVALID" };
 
-        var group = await _repo.RofoGroupRepository.SingleOrDefaultAsync(x => x.SecurityStamp.Equals(new Guid(parsedToken.Item1)));
+        var group = await _repo.RofoGroupRepository.SingleOrDefaultAsync(x =>
+            x.SecurityStamp.Equals(new Guid(parsedToken.Item1)));
+
         if(group == null)
             return new JoinGroupResponseModel() { Errors = "ACCOUNT_CODE_INVALID" };
 

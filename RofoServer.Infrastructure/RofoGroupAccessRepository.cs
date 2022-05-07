@@ -1,4 +1,5 @@
-﻿using RofoServer.Domain.IdentityObjects;
+﻿using System;
+using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.IRepositories;
 using RofoServer.Domain.RofoObjects;
 using System.Threading.Tasks;
@@ -16,6 +17,12 @@ namespace RofoServer.Persistence
             return await RofoContext
                     .GroupAccess
                     .SingleOrDefaultAsync(x=> x.Group.Id .Equals(group.Id) && x.User.Id.Equals(user.Id));
+        }
+
+        public async Task<RofoGroupAccess> GetGroupPermission(RofoUser user, Guid group) {
+            return await RofoContext
+                .GroupAccess
+                .SingleOrDefaultAsync(x => x.Group.SecurityStamp.Equals(group) && x.User.Id.Equals(user.Id));
         }
 
         public async Task AddOrUpdateGroupClaimAsync(RofoGroup group, RofoUser user, string rofoClaim) {

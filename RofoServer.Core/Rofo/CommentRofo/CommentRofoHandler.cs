@@ -7,23 +7,23 @@ using RofoServer.Core.Utils;
 using RofoServer.Domain.IRepositories;
 using RofoServer.Domain.RofoObjects;
 
-namespace RofoServer.Core.Group.CreateGroup;
+namespace RofoServer.Core.Rofo.CommentRofo;
 
-public class CreateGroupHandler : IRequestHandler<CreateGroupCommand, CreateGroupResponseModel>
+public class CommentRofoHandler : IRequestHandler<CommentRofoCommand, CommentRofoResponseModel>
 {
     private readonly IRepositoryManager _repo;
     private IBlobService _blobber;
     private Domain.IdentityObjects.RofoUser _user;
 
-    public CreateGroupHandler(IRepositoryManager repo, IConfiguration config,IBlobService blobService) {
+    public CommentRofoHandler(IRepositoryManager repo, IConfiguration config,IBlobService blobService) {
         _repo = repo;
         _blobber = blobService;
     }
 
-    public async Task<CreateGroupResponseModel> Handle(CreateGroupCommand request, CancellationToken cancellationToken) {
+    public async Task<CommentRofoResponseModel> Handle(CommentRofoCommand request, CancellationToken cancellationToken) {
         _user = await _repo.UserRepository.GetUserByEmail(request.Request.Email);
         if (_user == null)
-            return new CreateGroupResponseModel { Errors = "INVALID USER" };
+            return new CommentRofoResponseModel { Errors = "INVALID USER" };
 
         var group = new RofoGroup()
         {
@@ -36,6 +36,6 @@ public class CreateGroupHandler : IRequestHandler<CreateGroupCommand, CreateGrou
         await _repo.RofoGroupAccessRepository.AddOrUpdateGroupClaimAsync(group, _user, RofoClaims.READ_WRITE_GROUP_CLAIM);
 
         await _repo.Complete();
-        return new CreateGroupResponseModel();
+        return new CommentRofoResponseModel();
     }
 }

@@ -36,7 +36,7 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
         if (_user == null)
             return new InviteToGroupResponseModel() { Errors = "INVALID USER" };
 
-        _group = await _repo.RofoGroupRepository.SingleOrDefaultAsync(x => x.Id.Equals(_req.GroupId));
+        _group = await _repo.RofoGroupRepository.SingleOrDefaultAsync(x => x.SecurityStamp.Equals(_req.GroupId));
         if(_group == null)
             return new InviteToGroupResponseModel() { Errors = "INVALID REQUEST" };
 
@@ -87,7 +87,7 @@ public class InviteToGroupHandler : IRequestHandler<InviteToGroupCommand, Invite
         return HtmlEncoder.Default.Encode(new UriBuilder(_req.ConfirmationEndpoint)
         {
             Query = ConvertObjectToQueryString.GetQueryString(new ValidateAccountRequestModel
-                { CallbackUrl = _req.CallbackUrl, Email = _req.Email, ValidationCode = code })
+                { CallbackUrl = _req.CallbackUrl, Email = _req.NewMemberEmail, ValidationCode = code })
         }.ToString());
     }
 

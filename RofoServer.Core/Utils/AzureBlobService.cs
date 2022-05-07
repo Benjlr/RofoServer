@@ -14,16 +14,16 @@ public class AzureBlobService : IBlobService
         _config = config;
     }
 
-    public async Task<string> CreateDirectory(string name) {
+    public async Task<string> CreateDirectory() {
         var containerClient =
             await new BlobServiceClient(_config["ConnectionStrings:BlobStore"])
-                .CreateBlobContainerAsync("rofo_group_" + name + Guid.NewGuid());
+                .CreateBlobContainerAsync($"rofo-group-{Guid.NewGuid()}");
         return containerClient.Value.Name;
     }
 
     public async Task<string> UploadPhoto(Stream photo, string container) {
-        var fileName = "rofo_" + Guid.NewGuid();
-        await new BlobServiceClient(_config["ConnectionStrings:BlobStore"])
+        var fileName = "rofo-" + Guid.NewGuid();
+        var blobInfo = await new BlobServiceClient(_config["ConnectionStrings:BlobStore"])
             .GetBlobContainerClient(container)
             .GetBlobClient(fileName)
             .UploadAsync(photo);
@@ -41,6 +41,7 @@ public class AzureBlobService : IBlobService
 
 public interface IBlobService
 {
-    Task<string> CreateDirectory(string name);
+    Task<string> CreateDirectory();
     Task<string> UploadPhoto(Stream photo, string container);
+    Task DownloadPhoto(string container, string photo, Stream dest);
 }
