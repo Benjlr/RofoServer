@@ -3,6 +3,7 @@ using RofoServer.Core.Utils;
 using RofoServer.Domain.IRepositories;
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,13 +29,16 @@ public class GetImageHandler : IRequestHandler<GetImageCommand, GetImageResponse
             return new GetImageResponseModel { Errors = "INVALID_REQUEST" };
 
         var permission = await _repo.RofoGroupAccessRepository.GetGroupPermission(_user, _photo.Group);
-        if (permission.Rights != RofoClaims.READ_GROUP_CLAIM)
+        if (permission == null ||
+            (permission.Rights != RofoClaims.READ_GROUP_CLAIM &&
+            permission.Rights != RofoClaims.READ_WRITE_GROUP_CLAIM))
             return new GetImageResponseModel() {Errors = "INVALID_REQUEST"};
 
         var myStream = new MemoryStream();
+        
         await _blobber.DownloadPhoto(_photo.Group.StorageLocation, _photo.ImageUrl, myStream);
         return new GetImageResponseModel() {
-            Data = Convert.ToBase64String(myStream.ToArray())
+            Data = _photo.FileMetaData +","+ Convert.ToBase64String(myStream.ToArray())
         };
     }
 }
