@@ -12,10 +12,12 @@ using RofoServer.Domain.IRepositories;
 using RofoServer.Persistence;
 using System;
 using System.Text;
+using System.Text.Json.Serialization;
 using RofoServer.Core.Group.AddToGroup;
 using RofoServer.Core.Group.CreateGroup;
 using RofoServer.Core.Group.JoinGroup;
 using RofoServer.Core.Group.ViewGroups;
+using RofoServer.Core.Rofo.GetAllComments;
 using RofoServer.Core.Rofo.GetRofoImage;
 using RofoServer.Core.Rofo.UploadRofo;
 using RofoServer.Core.Rofo.ViewRofos;
@@ -80,6 +82,7 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(UploadRofoRequestModel))
             .AddScoped(typeof(ViewRofosRequestModel))
             .AddScoped(typeof(GetImageRequestModel))
+            .AddScoped(typeof(GetAllCommentsRofoRequestModel))
 
             .AddScoped(typeof(AccountConfirmationEmailCommand))
             .AddScoped(typeof(AuthenticationCommand))
@@ -94,6 +97,7 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(UploadRofoCommand))
             .AddScoped(typeof(ViewRofosCommand))
             .AddScoped(typeof(GetImageCommand))
+            .AddScoped(typeof(GetAllCommentsRofoCommand))
 
 
             .AddScoped(typeof(IRequestHandler<AccountConfirmationEmailCommand, AccountConfirmationEmailResponseModel>), typeof(AccountConfirmationEmailHandler))
@@ -109,6 +113,7 @@ public static class RofoServiceExtensions
             .AddScoped(typeof(IRequestHandler<UploadRofoCommand, UploadRofoResponseModel>), typeof(UploadRofoHandler))
             .AddScoped(typeof(IRequestHandler<ViewRofosCommand, ViewRofosResponseModel>), typeof(ViewRofosHandler))
             .AddScoped(typeof(IRequestHandler<GetImageCommand, GetImageResponseModel>), typeof(GetImageHandler))
+            .AddScoped(typeof(IRequestHandler<GetAllCommentsRofoCommand, GetAllCommentsRofoResponseModel>), typeof(GetAllCommentsRofoHandler))
 
             .AddMediatR(AppDomain.CurrentDomain.Load("RofoServer.Core"));
 
@@ -131,5 +136,9 @@ public static class RofoServiceExtensions
                 options => options
                     .Filters
                     .Add<ModelOrNotFoundActionFilter>()
-            );
+            ).AddJsonOptions(json => {
+                json.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                json.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                json.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
 }

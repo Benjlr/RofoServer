@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using RofoServer.Domain.IdentityObjects;
 using RofoServer.Domain.RofoObjects;
 
@@ -13,6 +14,7 @@ namespace RofoServer.Persistence
 
         public RofoDbContext(DbContextOptions<RofoDbContext> options)
             : base(options) {
+            
         }
 
         public RofoDbContext()

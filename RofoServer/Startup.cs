@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ public class Startup
             app.UseDeveloperExceptionPage();
 
         app
+            
             .UseSwaggerUI()
             .UseRouting()
             .UseCors(options => options
