@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using MediatR;
 
 namespace RofoServer.Core.Group.AddToGroup;
 
 public class InviteToGroupRequestModel : IRequest<InviteToGroupRequestModel>
 {
+    [IgnoreDataMember]
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Email required"), EmailAddress(ErrorMessage = "Email is invalid format")]
@@ -20,6 +22,8 @@ public class InviteToGroupRequestModel : IRequest<InviteToGroupRequestModel>
 
 
     public string CallbackUrl { get; set; }
+    [IgnoreDataMember]
+
     public string ConfirmationEndpoint { get; set; }
     public string RegisterEndpoint { get; set; }
 
