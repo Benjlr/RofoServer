@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RofoServer.Core;
 using RofoServer.Core.Rofo.CommentRofo;
+using RofoServer.Core.Rofo.GetAllComments;
 using RofoServer.Core.Rofo.GetRofoImage;
 using RofoServer.Core.Rofo.UploadRofo;
 using RofoServer.Core.Rofo.ViewRofos;
 using RofoServer.Core.Utils.TokenService;
 using System.Net;
 using System.Threading.Tasks;
-using RofoServer.Core.Rofo.GetAllComments;
 
 namespace RofoServer.Controller;
 
@@ -58,8 +58,7 @@ public class RofoController : ApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetImage([FromQuery] GetImageRequestModel req)
-    {
+    public async Task<IActionResult> GetImage([FromQuery] GetImageRequestModel req) {
         if (ModelState.ErrorCount > 0)
             return BadRequest();
 
@@ -74,8 +73,7 @@ public class RofoController : ApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> Upload([FromBody] CommentRofoRequestModel req)
-    {
+    public async Task<IActionResult> Upload([FromBody] CommentRofoRequestModel req) {
         if (ModelState.ErrorCount > 0)
             return BadRequest();
 
@@ -90,8 +88,7 @@ public class RofoController : ApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
-    public async Task<IActionResult> GetComments([FromQuery] GetAllCommentsRofoRequestModel req)
-    {
+    public async Task<IActionResult> GetComments([FromQuery] GetAllCommentsRofoRequestModel req) {
         if (ModelState.ErrorCount > 0)
             return BadRequest();
 
