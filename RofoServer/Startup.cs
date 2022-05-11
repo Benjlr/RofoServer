@@ -33,7 +33,7 @@ public class Startup
             .UseSwaggerUI()
             .UseRouting()
             .UseCors(options => options
-                .WithOrigins("http://localhost:4200").AllowAnyMethod().AllowCredentials()
+                .WithOrigins("https://rofos.azurewebsites.net/").AllowAnyMethod().AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod())
             .UseAuthentication()
