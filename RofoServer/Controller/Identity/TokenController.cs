@@ -38,7 +38,7 @@ public class TokenController : ApiController
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> RevokeToken([FromBody] RevokeRefreshTokenRequestModel req) {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) //
             return BadRequest(ModelState.GetErrors());
 
         var response = await _mediator.Send(new RevokeRefreshTokenCommand(req));
