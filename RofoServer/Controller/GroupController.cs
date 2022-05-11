@@ -23,7 +23,7 @@ public class GroupController : ApiController
 
     [HttpPost("create")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CreateGroupResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> CreateGroup([FromBody] CreateGroupRequestModel req) {
@@ -38,7 +38,7 @@ public class GroupController : ApiController
 
     [HttpGet("get")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetAllGroupResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetAllGroups() {
@@ -55,7 +55,7 @@ public class GroupController : ApiController
 
     [HttpPost("invite")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(InviteToGroupResponseModel), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> InviteToGroup([FromBody] InviteToGroupRequestModel request) {
@@ -70,7 +70,7 @@ public class GroupController : ApiController
 
     [HttpGet("join")]
     [AllowAnonymous]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(JoinGroupResponseModel), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> JoinGroup([FromQuery] JoinGroupRequestModel request)

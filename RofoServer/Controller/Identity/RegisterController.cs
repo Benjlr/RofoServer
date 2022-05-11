@@ -21,7 +21,7 @@ namespace RofoServer.Controller.Identity
 
         [HttpPost]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(RegisterResponseModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterRequestModel req)
@@ -34,7 +34,7 @@ namespace RofoServer.Controller.Identity
 
         [HttpPost("request-email-confirmation")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AccountConfirmationEmailResponseModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> SendConfirmationEmail([FromBody] AccountConfirmationEmailRequestModel req)
@@ -48,7 +48,7 @@ namespace RofoServer.Controller.Identity
 
         [HttpGet("confirm-account")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ValidateAccountResponseModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
         [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> ValidateAccount([FromQuery] ValidateAccountRequestModel req)

@@ -20,7 +20,7 @@ public class TokenController : ApiController
 
     [HttpPost("refresh-token")]
     //[Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(RefreshTokenResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> RefreshUserToken([FromBody] RefreshTokenRequestModel req) {
@@ -34,7 +34,7 @@ public class TokenController : ApiController
 
     [HttpPost("revoke-token")]
     [AllowAnonymous]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(RevokeRefreshTokenResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> RevokeToken([FromBody] RevokeRefreshTokenRequestModel req) {

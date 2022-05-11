@@ -19,9 +19,9 @@ public class AuthenticationController : ApiController
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+    [ProducesResponseType(typeof(AuthenticateResponseModel), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestModel req) {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrors());

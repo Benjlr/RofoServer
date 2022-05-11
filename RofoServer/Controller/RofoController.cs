@@ -23,7 +23,7 @@ public class RofoController : ApiController
 
     [HttpPost("uploadrofo")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(UploadRofoResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Upload([FromBody]UploadRofoRequestModel req) {
@@ -39,7 +39,7 @@ public class RofoController : ApiController
 
     [HttpGet("viewrofos")]
     [Authorize]
-    [ProducesResponseType((int) HttpStatusCode.OK)]
+    [ProducesResponseType( typeof(ViewRofosResponseModel), (int) HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int) HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int) HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> View([FromQuery] ViewRofosRequestModel req) {
@@ -55,7 +55,7 @@ public class RofoController : ApiController
 
     [HttpGet("getrofoimage")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetImageResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetImage([FromQuery] GetImageRequestModel req) {
@@ -70,7 +70,7 @@ public class RofoController : ApiController
 
     [HttpPost("comment")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommentRofoResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Upload([FromBody] CommentRofoRequestModel req) {
@@ -85,7 +85,7 @@ public class RofoController : ApiController
 
     [HttpGet("getcomments")]
     [Authorize]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(GetAllCommentsRofoResponseModel),(int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
     [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> GetComments([FromQuery] GetAllCommentsRofoRequestModel req) {

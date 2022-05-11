@@ -11,7 +11,7 @@ public class StatusController : ApiController
 
     [HttpGet]
     [AllowAnonymous]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(string),(int)HttpStatusCode.OK)]
     public IActionResult Status() {
         return Ok("Alive");
     }
