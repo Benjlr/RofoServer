@@ -26,6 +26,10 @@ public class AuthenticateHandler : IRequestHandler<AuthenticationCommand, Authen
     public async Task<AuthenticateResponseModel> Handle(AuthenticationCommand request, CancellationToken cancellationToken) {
 
         _user = await _repo.UserRepository.GetUserByEmail(request.Request.Email);
+        if(_user == null)
+            return new AuthenticateResponseModel() { Errors = "NO_ACCOUNT" };
+
+
         if (!await validCredentials(request.Request.Password))
             return new AuthenticateResponseModel() { Errors = "INVALID_CREDENTIALS" };
 
