@@ -35,7 +35,7 @@ public static class RofoServiceExtensions
     public static IServiceCollection AddDatabases(this IServiceCollection services, IConfiguration config)
         => services
             .AddDbContext<RofoDbContext>(options =>
-                options.UseLazyLoadingProxies().UseNpgsql(config.GetConnectionString("AzureDb")));
+                options.UseLazyLoadingProxies().UseNpgsql(config["ConnectionStrings:AzureDb"]));
 
 
 
