@@ -36,7 +36,10 @@ public class JoinGroupHandler : IRequestHandler<JoinGroupCommand, JoinGroupRespo
 
         await _repo.RofoGroupAccessRepository.AddOrUpdateGroupClaimAsync(group, user, parsedToken.Item2);
         await _repo.Complete();
-        return new JoinGroupResponseModel();
+        return new JoinGroupResponseModel()
+        {
+            Response = "You have successfully joined the group! Please return to the group page!"
+        };
     }
 
 }
