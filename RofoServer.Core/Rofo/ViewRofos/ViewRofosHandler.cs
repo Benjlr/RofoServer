@@ -1,8 +1,12 @@
 ﻿using MediatR;
+using RofoServer.Core.Rofo.GetAllComments;
 using RofoServer.Core.Utils;
 using RofoServer.Domain.IRepositories;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using RofoServer.Core.Group.ViewGroups;
 
 namespace RofoServer.Core.Rofo.ViewRofos;
 
@@ -26,7 +30,40 @@ public class ViewRofosHandler : IRequestHandler<ViewRofosCommand, ViewRofosRespo
 
         var rofos = await _repo.RofoRepository.FindAllAsync(x => x.Group.SecurityStamp.Equals(request.Request.GroupId));
         return new ViewRofosResponseModel() {
-            Rofos = rofos
+            Rofos = GetRofos(rofos).ToList()
         };
+    }
+
+    private IEnumerable<RofoResponseModel> GetRofos(List<Domain.RofoObjects.Rofo> rofos) {
+        for (int i = 0; i < rofos.Count; i++) {
+            yield return new RofoResponseModel()
+            {
+                Comments = GetComments(rofos[i]).ToList(),
+                Description = rofos[i].Description,
+                PhotoUploadedByUserName = rofos[i].UploadedBy.UserName,
+                SecurityStamp = rofos[i].SecurityStamp,
+                UploadedDate = rofos[i].UploadedDate,
+                Group = new GroupResponse()
+                {
+                    Description = rofos[i].Group.Description,
+                    Name = rofos[i].Group.Name,
+                    SecurityStamp = rofos[i].Group.SecurityStamp
+                }
+            };
+        }
+    }
+
+    private IEnumerable<CommentResponse> GetComments(Domain.RofoObjects.Rofo photo)
+    {
+        for (int i = 0; i < photo.Comments.Count; i++)
+        {
+            yield return new CommentResponse()
+            {
+                ParentPhoto = photo.SecurityStamp,
+                Text = photo.Comments[i].Text,
+                UploadedDateTime = photo.Comments[i].UploadedDateTime,
+                UploadedByUserName = photo.Comments[i].UploadedBy.UserName
+            };
+        }
     }
 }

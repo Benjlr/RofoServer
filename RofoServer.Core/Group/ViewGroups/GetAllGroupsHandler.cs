@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Configuration;
 using RofoServer.Domain.IRepositories;
+using RofoServer.Domain.RofoObjects;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +25,18 @@ public class GetAllGroupsHandler : IRequestHandler<GetGroupsCommand, GetAllGroup
 
         return new GetAllGroupResponseModel()
         {
-            Groups = await _repo.RofoGroupRepository.GetUsersGroups(_user)
+            Groups = GetGroups(await _repo.RofoGroupRepository.GetUsersGroups(_user)).ToList()
         };
+    }
+
+    private IEnumerable<GroupResponse> GetGroups(List<RofoGroup> groups) {
+        for (int i = 0; i < groups.Count; i++) {
+            yield return new GroupResponse()
+            {
+                Description = groups[i].Description,
+                Name = groups[i].Name,
+                SecurityStamp = groups[i].SecurityStamp
+            };
+        }
     }
 }

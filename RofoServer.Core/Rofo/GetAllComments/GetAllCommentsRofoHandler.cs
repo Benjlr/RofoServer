@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -36,7 +38,19 @@ public class GetAllCommentsRofoHandler : IRequestHandler<GetAllCommentsRofoComma
         await _repo.Complete();
         return new GetAllCommentsRofoResponseModel()
         {
-            Comments = photo.Comments
+            Comments = GetComments(photo).ToList()
         };
+    }
+
+    private IEnumerable<CommentResponse> GetComments(Domain.RofoObjects.Rofo photo) {
+        for (int i = 0; i < photo.Comments.Count; i++) {
+            yield return new CommentResponse()
+            {
+                ParentPhoto = photo.SecurityStamp,
+                Text = photo.Comments[i].Text,
+                UploadedDateTime = photo.Comments[i].UploadedDateTime,
+                UploadedByUserName = photo.Comments[i].UploadedBy.UserName
+            };
+        }
     }
 }
