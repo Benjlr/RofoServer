@@ -59,6 +59,9 @@ public class UploadRofoHandler : IRequestHandler<UploadRofoCommand, UploadRofoRe
 
         await _repo.RofoRepository.AddAsync(rofo);
         await _repo.Complete();
-        return new UploadRofoResponseModel();
+        return new UploadRofoResponseModel()
+        {
+            UploadedPhotoId = rofo.SecurityStamp
+        };
     }
 }

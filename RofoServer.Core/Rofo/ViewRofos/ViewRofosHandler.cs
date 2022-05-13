@@ -24,8 +24,9 @@ public class ViewRofosHandler : IRequestHandler<ViewRofosCommand, ViewRofosRespo
             return new ViewRofosResponseModel {Errors = "INVALID_REQUEST"};
 
         var permission = await _repo.RofoGroupAccessRepository.GetGroupPermission(_user, request.Request.GroupId);
-        if (permission.Rights != RofoClaims.READ_WRITE_GROUP_CLAIM &&
-            permission.Rights != RofoClaims.READ_GROUP_CLAIM)
+        if (permission == null || 
+            (permission.Rights != RofoClaims.READ_WRITE_GROUP_CLAIM &&
+            permission.Rights != RofoClaims.READ_GROUP_CLAIM))
             return new ViewRofosResponseModel() {Errors = "INVALID_REQUEST"};
 
         var rofos = await _repo.RofoRepository.FindAllAsync(x => x.Group.SecurityStamp.Equals(request.Request.GroupId));

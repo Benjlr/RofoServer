@@ -10,6 +10,7 @@ using RofoServer.Core.Rofo.ViewRofos;
 using RofoServer.Core.Utils.TokenService;
 using System.Net;
 using System.Threading.Tasks;
+using RofoServer.Core.Rofo.DownloadRofo;
 
 namespace RofoServer.Controller;
 
@@ -98,4 +99,20 @@ public class RofoController : ApiController
         return Ok(response);
     }
 
+
+    [HttpGet("getrofo")]
+    [Authorize]
+    [ProducesResponseType(typeof(DownloadRofoResponseModel), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.RequestTimeout)]
+    [ProducesResponseType(typeof(ErrorDetail), (int)HttpStatusCode.InternalServerError)]
+    public async Task<IActionResult> GetRofo([FromQuery] DownloadRofoRequestModel req)
+    {
+        if (ModelState.ErrorCount > 0)
+            return BadRequest();
+
+        req.Email = GetUserEmailClaim();
+
+        var response = await _mediator.Send(new DownloadRofoCommand(req));
+        return Ok(response);
+    }
 }
