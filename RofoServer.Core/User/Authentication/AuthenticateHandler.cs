@@ -80,7 +80,7 @@ public class AuthenticateHandler : IRequestHandler<AuthenticationCommand, Authen
     private async Task manageLockouts() {
         var failedAttempts = await _repo.UserRepository.AccessFailedAsync(_user);
         if (failedAttempts >= int.Parse(_config["AppSettings:MaxFailedSignInAttempts"]))
-            await _repo.UserRepository.SetLockoutAsync(_user, DateTime.Now.AddMinutes(int.Parse(_config["LockoutTime"])));
+            await _repo.UserRepository.SetLockoutAsync(_user, DateTime.UtcNow.AddMinutes(int.Parse(_config["AppSettings:LockoutTime"])));
     }
 
     private bool TwoFactorEnabled()
